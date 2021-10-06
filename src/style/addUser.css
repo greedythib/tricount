@@ -1,0 +1,42 @@
+.add-user-div{
+    padding-left: 52px;
+    padding-right: 52px;
+}
+
+.add-user-header{
+    color:darkblue;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: solid .2px darkblue;
+}
+#add-user-header-logo{
+    padding-right: 10px;
+}
+
+/*.add-user-input{*/
+/*    margin-top: 15px;*/
+/*    margin-left: 250px;*/
+/*    margin-right: 250px;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    !*text-align: center;*!*/
+/*    justify-content: space-between;*/
+/*    padding: 5px;*/
+/*}*/
+
+/*#add-user-input-field{*/
+/*    margin:auto;*/
+/*    margin-bottom:15px;*/
+/*}*/
+#add-user-submit-btn{
+    /*margin-left: 255px;*/
+    width: 100px;
+}
+
+
+/*#add-user-new-user{*/
+/*    margin: auto;*/
+/*}*/

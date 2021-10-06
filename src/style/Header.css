@@ -1,0 +1,9 @@
+.header{
+    text-align: center;
+    padding: 32px;
+    color: darkblue;
+    background-color: lightsteelblue;
+    border-bottom: 3px solid darkblue;
+    /*text-shadow: .5px .5px .5px darkblue;*/
+    font-weight: bold;
+}

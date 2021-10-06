@@ -1,0 +1,39 @@
+/*.balance-sheet-div{*/
+/*    display:flex;*/
+/*    flex-direction: column;*/
+/*}*/
+.balance-sheet-header{
+    color:darkblue;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: solid .2px darkblue;
+}
+
+#balance-header-logo{
+    /*margin: auto;*/
+    padding-bottom: 2px;
+    padding-right: 10px;
+}
+
+.balance-sheet-div{
+    padding-top: 32px;
+    padding-left: 52px;
+    padding-right: 52px;
+}
+
+.balance-sheet-users-list{
+    padding: 0px;
+    border: solid 1px darkblue;
+    border-radius: 10px;
+    list-style-type: none;
+}
+
+
+
+/*.balance-item-list{*/
+/*    list-style-type: none;*/
+/*}*/
+

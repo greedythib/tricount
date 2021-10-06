@@ -1,0 +1,38 @@
+.add-payment-div{
+    padding-left: 52px;
+    padding-right: 52px;
+}
+
+.add-payment-header{
+    color:darkblue;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: solid .2px darkblue;
+}
+
+#add-payment-header-logo{
+    padding-right: 10px;
+}
+
+.add-payment-inputs{
+    margin-top: 12px;
+}
+
+#add-payment-frag{
+    padding: 15px;
+}
+
+#add-payment-amount{
+    width: 50px;
+}
+
+#add-payment-submit-btn{
+    /*align-items: center;*/
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    margin-left: 10px;
+}
