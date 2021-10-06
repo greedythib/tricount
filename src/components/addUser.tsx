@@ -1,5 +1,7 @@
 import '../style/addUser.css'
 import { useState, useEffect } from 'react'
+import {Props} from '../interfaces/interfaces'
+// import Material UI components
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
@@ -19,9 +21,7 @@ import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import SaveIcon from '@mui/icons-material/Save';
 
-
-function AddUser({activeUsers, updateActiveUsers}){
-
+function AddUser({activeUsers, updateActiveUsers}: Props){
     // Retrieve list of users
     let users_list: string[] = [];
     for (let i = 0; i < activeUsers.length; i++){
@@ -51,7 +51,7 @@ function AddUser({activeUsers, updateActiveUsers}){
     };
     }, []);
 
-    function handleNewUser(e) {
+    function handleNewUser(e: any) {
         setSuccess(false); // make button blue
         // check input validity
         if (users_list.includes(e.target.value)){
@@ -69,7 +69,7 @@ function AddUser({activeUsers, updateActiveUsers}){
         }
 	}
 
-	function addNewUser(e){
+	function addNewUser(e: any){
         if (newUser !== ''){
             if (!loading) {
                 setSuccess(false);
@@ -80,7 +80,11 @@ function AddUser({activeUsers, updateActiveUsers}){
                     }, 750);
             }
             // update parent state
-            updateActiveUsers([...activeUsers, {'name': newUser, 'creditors':[]}]);
+            let new_user_id:string = String(activeUsers.length);
+            updateActiveUsers(
+                [...activeUsers,
+                    {'name': newUser, 'id' : new_user_id, totalCredit : '0', 'creditors':[], 'debtors':[]}]
+            );
             setNewUser('');
             console.log('parent state updated');
         }

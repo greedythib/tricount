@@ -6,6 +6,7 @@ import AddUser from "./addUser";
 import BalanceSheet from "./BalanceSheet";
 import Header from "./Header";
 import Footer from "./Footer";
+import {Props, UserInterface} from '../interfaces/interfaces'
 // import users data
 import {users} from '../data/usersList'
 import {createInterface} from "readline";
@@ -35,7 +36,7 @@ function App() {
     //     activeUsers: enumUsers;
     // }
 
-    const [activeUsers, updateActiveUsers] = useState(users);
+    const [activeUsers, updateActiveUsers] = useState<UserInterface[]>(users);
     // const [newUser, setNewUser] = useState('');
     // setInterval(function(){ console.log(activeUsers.filter(user => {return user.id === '1'})[0]); }, 10000);
     //
