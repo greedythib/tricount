@@ -1,8 +1,8 @@
 import '../style/addPayment.css'
 import {removeCreditor, simplifyUnilateralCredit, updateCreditor} from "../utils/handleUsers";
 import { useState, useEffect } from 'react'
-// import {users} from './addUser'
-// import {users_list} from './addUser'
+import {Props} from '../interfaces/interfaces'
+// Material UI framework imports
 import PaymentIcon from '@mui/icons-material/Payment';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,40 +10,38 @@ import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
-// FIXME: simplify interface below
-interface enumCreditorItems{
-        name: string;
-        value: string;
-}
-interface enumCreditors extends Array<enumCreditorItems>{ }
-interface enumUserItems{
-        name: string;
-        id: string;
-        totalCredit: string;
-        creditors: enumCreditors;
-        debtors: enumCreditors;
-}
-interface enumUsers extends Array<enumUserItems>{ }
+// interface UserInterfaceMinimal{
+//     name: string;
+//     value: string;
+// }
+//
+// interface UserInterface{
+//     name:string;
+//     id:string;
+//     totalCredit:string;
+//     debtors: UserInterfaceMinimal[];
+//     creditors: UserInterfaceMinimal[];
+// }
+//
+// interface Props {
+//     activeUsers: UserInterface[];
+//     updateActiveUsers: React.Dispatch<React.SetStateAction<UserInterface[]>>
+// }
 
-interface activeUsersProps{
-        activeUsers: enumUsers;
-        updateActiveUsers: React.Dispatch<React.SetStateAction<enumUsers>>
-}
-
-function AddPayment({activeUsers, updateActiveUsers}){
+function AddPayment({activeUsers, updateActiveUsers}: Props){
 
     const [payer, setPayer] = useState(activeUsers[0].name);
     const [payee, setPayee] = useState(activeUsers[1].name);
     const [amountPaid, setAmountPaid] = useState('')
     const [inputError, setInputError] = useState(false)
 
-    function handlePayer(e){
+    function handlePayer(e: any){
         setPayer(e.target.value);
     }
-    function handlePayee(e){
+    function handlePayee(e: any){
         setPayee(e.target.value);
     }
-    function handleAmountPaid(e){
+    function handleAmountPaid(e: any){
         setAmountPaid(e.target.value);
     }
 
@@ -195,7 +193,7 @@ function AddPayment({activeUsers, updateActiveUsers}){
                            onChange = {handlePayer} >
                     {
                         activeUsers.map((user) => (
-                            <MenuItem key = {user} value = {user.name}>
+                            <MenuItem key = {user.id} value = {user.name}>
                                 {user.name}
                             </MenuItem>
                         ))
