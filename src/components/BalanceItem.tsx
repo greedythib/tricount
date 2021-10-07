@@ -1,3 +1,5 @@
+import {userProp} from "../interfaces/interfaces";
+// material UI components
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -7,10 +9,8 @@ import Divider from '@mui/material/Divider';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import DraftsIcon from '@mui/icons-material/Drafts';
 
-function BalanceItem({user}){
+function BalanceItem({user}: userProp){
     const creditors = user.creditors;
-    // console.log(creditors.length);
-    // TODO: handle multiple payment from same person
     return<div className='balance-item'>
         {
             creditors.length>0?

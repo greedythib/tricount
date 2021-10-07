@@ -1,10 +1,10 @@
 // Interface for creditor/debtors
-export interface UserInterfaceMinimal{
+export interface UserInterfaceMinimal {
     name: string;
     value: string;
 }
 // Interface for user
-export interface UserInterface{
+export interface UserInterface {
     name:string;
     id:string;
     totalCredit:string;
@@ -12,6 +12,14 @@ export interface UserInterface{
     creditors: UserInterfaceMinimal[];
 }
 // Interface for props
+export interface activeUserProp{
+    activeUsers: UserInterface[];
+}
+
+export interface userProp{
+    user: UserInterface;
+}
+
 export interface Props {
     activeUsers: UserInterface[];
     updateActiveUsers: React.Dispatch<React.SetStateAction<UserInterface[]>>

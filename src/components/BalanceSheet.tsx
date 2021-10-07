@@ -1,9 +1,10 @@
 import '../style/BalanceSheet.css'
-import {users} from '../data/usersList'
 import BalanceItem from "./BalanceItem";
+import {activeUserProp, Props, UserInterface} from '../interfaces/interfaces'
+// import material UI components
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 
-function BalanceSheet({activeUsers}){
+function BalanceSheet({activeUsers}: activeUserProp){
     // console.log(users);
     return(
         <div className= 'balance-sheet-div'>
