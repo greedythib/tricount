@@ -17,31 +17,37 @@ import {createInterface} from "readline";
 // import green from '@material-ui/core/colors/green';
 function App() {
 
-
-    // interface enumCreditorItems{
-    //     name: string;
-    //     value: string;
-    // }
-    // interface enumCreditors extends Array<enumCreditorItems>{ }
-    // interface enumUserItems{
-    //     name: string;
-    //     id: string;
-    //     totalCredit: string;
-    //     creditors: enumCreditors;
-    //     debtors: enumCreditors;
-    // }
-    // interface enumUsers extends Array<enumUserItems>{ }
-    //
-    // interface activeUsersProps{
-    //     activeUsers: enumUsers;
-    // }
-
     const [activeUsers, updateActiveUsers] = useState<UserInterface[]>(users);
-    // const [newUser, setNewUser] = useState('');
-    // setInterval(function(){ console.log(activeUsers.filter(user => {return user.id === '1'})[0]); }, 10000);
-    //
-    // useEffect(() => {
-    //     console.log('one user has been added in `App`');}, [activeUsers]);
+
+    useEffect(() => {
+        let newUser = {
+            'name': 'Bartok',
+            'id': '1',
+            'totalCredit': '0',
+            'debtors': [],
+            'creditors':[]
+        };
+        fetch('/api',{
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newUser)
+        })
+            .then(function(res){
+                if (res.ok){return res.json()}
+            })
+            .then(function(value){console.log(value)})
+    }, [])
+
+    useEffect(() => {
+        fetch("/api")
+            .then((res) => res.json())
+            .then((value) => console.log(value));
+        },
+        [activeUsers]);
+
 
   return (
     <div className="App">

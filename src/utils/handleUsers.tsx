@@ -1,7 +1,7 @@
-
+import {UserInterfaceMinimal, UserInterface} from '../interfaces/interfaces'
 // FIXME: add interfaces
 
-export function removeCreditor(creditor, creditors){
+export function removeCreditor(creditor: string, creditors: UserInterfaceMinimal[]){
     let creditorIndex = creditors.indexOf(creditors.filter(cred => {return cred.name == creditor})[0])
     if (creditorIndex > -1){
         creditors.splice(creditorIndex, 1)
@@ -28,7 +28,7 @@ export function removeCreditor(creditor, creditors){
 //     }
 // }
 
-export function updateCreditor(creditor, creditors, amount){
+export function updateCreditor(creditor: string, creditors: UserInterfaceMinimal[], amount: number){
     // CASE 1: Not a creditor yet => add a new creditor
     if (creditors.filter(cred => {return cred.name == creditor}).length===0){
         if (amount > 0){
@@ -51,32 +51,32 @@ export function updateCreditor(creditor, creditors, amount){
     return(creditors)
 }
 
-export function simplifyUnilateralCredit(user_A, user_B){
-    let user_A_creditors = user_A.filter(user => {return user.name == user_A})[0].creditors;
-    let user_A_owes_user_B = user_A_creditors.filter(cred => {return cred.name == user_B})
-    let user_B_creditors = user_A.filter(user => {return user.name == user_B})[0].creditors;
-    let user_B_owes_user_A = user_B_creditors.filter(cred => {return cred.name == user_A})
-    if (user_A_owes_user_B.length !==0 && user_B_owes_user_A.length !==0){
-        // then let's simplify the debts
-        let user_B_debt = parseInt(user_B_owes_user_A[0].value);
-        let user_A_debt = parseInt(user_A_owes_user_B[0].value);
-        if (parseInt(String(user_A_debt)) == parseInt(String(user_B_debt))){
-            // then debts compensate
-            user_A_creditors = removeCreditor(user_B, user_A_creditors);
-            user_B_creditors = removeCreditor(user_A, user_B_creditors);
-        }
-        else if ( user_B_debt > user_A_debt){
-            // then 1_ we erase payer debts
-            user_A_creditors = removeCreditor(user_B, user_A_creditors);
-            // and 2_ create a debt for payee
-            user_B_creditors = updateCreditor(user_A, user_A_creditors, -user_A_debt);
-        }
-        else{
-            // then 1_ we erase payer debts
-            user_B_creditors = removeCreditor(user_A, user_B_creditors);
-            // and 2_ create a debt for payee
-            user_A_creditors = updateCreditor(user_B, user_B_creditors, -user_B_debt);
-        }
-    }
-    return([user_A_creditors, user_B_creditors])
-}
+// export function simplifyUnilateralCredit(user_A: , user_B){
+//     let user_A_creditors = user_A.filter(user => {return user.name == user_A})[0].creditors;
+//     let user_A_owes_user_B = user_A_creditors.filter(cred => {return cred.name == user_B})
+//     let user_B_creditors = user_A.filter(user => {return user.name == user_B})[0].creditors;
+//     let user_B_owes_user_A = user_B_creditors.filter(cred => {return cred.name == user_A})
+//     if (user_A_owes_user_B.length !==0 && user_B_owes_user_A.length !==0){
+//         // then let's simplify the debts
+//         let user_B_debt = parseInt(user_B_owes_user_A[0].value);
+//         let user_A_debt = parseInt(user_A_owes_user_B[0].value);
+//         if (parseInt(String(user_A_debt)) == parseInt(String(user_B_debt))){
+//             // then debts compensate
+//             user_A_creditors = removeCreditor(user_B, user_A_creditors);
+//             user_B_creditors = removeCreditor(user_A, user_B_creditors);
+//         }
+//         else if ( user_B_debt > user_A_debt){
+//             // then 1_ we erase payer debts
+//             user_A_creditors = removeCreditor(user_B, user_A_creditors);
+//             // and 2_ create a debt for payee
+//             user_B_creditors = updateCreditor(user_A, user_A_creditors, -user_A_debt);
+//         }
+//         else{
+//             // then 1_ we erase payer debts
+//             user_B_creditors = removeCreditor(user_A, user_B_creditors);
+//             // and 2_ create a debt for payee
+//             user_A_creditors = updateCreditor(user_B, user_B_creditors, -user_B_debt);
+//         }
+//     }
+//     return([user_A_creditors, user_B_creditors])
+// }

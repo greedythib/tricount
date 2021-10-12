@@ -1,5 +1,5 @@
 import '../style/addPayment.css'
-import {removeCreditor, simplifyUnilateralCredit, updateCreditor} from "../utils/handleUsers";
+import {removeCreditor, updateCreditor} from "../utils/handleUsers";
 import { useState, useEffect } from 'react'
 import {Props} from '../interfaces/interfaces'
 // Material UI framework imports
@@ -9,24 +9,6 @@ import MenuItem from '@mui/material/MenuItem';
 import {Stack} from "@mui/material";
 import Button from "@mui/material/Button";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
-
-// interface UserInterfaceMinimal{
-//     name: string;
-//     value: string;
-// }
-//
-// interface UserInterface{
-//     name:string;
-//     id:string;
-//     totalCredit:string;
-//     debtors: UserInterfaceMinimal[];
-//     creditors: UserInterfaceMinimal[];
-// }
-//
-// interface Props {
-//     activeUsers: UserInterface[];
-//     updateActiveUsers: React.Dispatch<React.SetStateAction<UserInterface[]>>
-// }
 
 function AddPayment({activeUsers, updateActiveUsers}: Props){
 
