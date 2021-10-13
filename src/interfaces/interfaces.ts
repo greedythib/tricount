@@ -5,8 +5,8 @@ export interface UserInterfaceMinimal {
 }
 // Interface for user
 export interface UserInterface {
-    name:string;
     id:string;
+    name:string;
     totalCredit:string;
     debtors: UserInterfaceMinimal[];
     creditors: UserInterfaceMinimal[];

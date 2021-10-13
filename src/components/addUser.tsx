@@ -7,6 +7,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 // import Buttons
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 // import Icons
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -31,6 +33,7 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
     const [newUser, setNewUser] = useState('');
     const [inputError, setInputError] = useState(false);
     const [ErrorMessage, setErrorMessage] = useState('');
+    const [checkBox, setCheckBox] = useState(false);
 
     // States and variables for loading button design
     const [loading, setLoading] = React.useState(false);
@@ -80,14 +83,41 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
                     }, 750);
             }
             // update parent state
-            let new_user_id:string = String(activeUsers.length);
+            let new_user_id:string = String(activeUsers.length + 1);
+            console.log(new_user_id);
+            if (checkBox){
+                console.log('send POST request to backend in order to add new user to MongoDB')
+                let user = {
+                    'name': newUser,
+                    'id': new_user_id,
+                    'totalCredit': '0',
+                    'debtors': [],
+                    'creditors':[]
+                };
+                fetch('/api',{
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                    })
+                    .then(function(res){
+                        if (res.ok){return res.json()}
+                    })
+                    .then(function(value){console.log(value)})
+            }
             updateActiveUsers(
                 [...activeUsers,
-                    {'name': newUser, 'id' : new_user_id, totalCredit : '0', 'creditors':[], 'debtors':[]}]
+                    {'id' : new_user_id, 'name': newUser, totalCredit : '0', 'creditors':[], 'debtors':[]}]
             );
             setNewUser('');
             console.log('parent state updated');
         }
+    }
+
+    function handleCheckBox(e:any){
+        checkBox? setCheckBox(false): setCheckBox(true);
     }
 
     return(
@@ -99,9 +129,6 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
             {/*<div className = 'add-user-input'>*/}
                 {/*<div id = 'add-user-input-field'>*/}
                     <Stack direction = 'row' spacing = {2} justifyContent = 'center' mt = {5}>
-                    {/*<InputLabel htmlFor="input-with-icon-adornment">*/}
-                    {/*    Please enter the name of the new user*/}
-			        {/*</InputLabel>*/}
                     <TextField
                           placeholder='Enter new user here'
                           error = {inputError}
@@ -116,9 +143,16 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
                               </InputAdornment>,
                             }}
                     />
-
-                {/*</div>*/}
-                {/*<div id = 'add-user-submit-btn'>*/}
+                        <FormControlLabel
+                            // value="false"
+                            control={
+                                <Checkbox
+                                />
+                            }
+                            onClick = {handleCheckBox}
+                            label={`Register ${newUser} on database`}
+                            labelPlacement="end"
+                        />
                     <Button
                         id = 'add-user-submit-btn'
                         variant="contained"
@@ -142,6 +176,7 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
                         }}
                       />
                     )}
+
                     </Stack>
                 {/*</div>*/}
             {/*</div>*/}

@@ -12,8 +12,8 @@ import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
 function AddPayment({activeUsers, updateActiveUsers}: Props){
 
-    const [payer, setPayer] = useState(activeUsers[0].name);
-    const [payee, setPayee] = useState(activeUsers[1].name);
+    const [payer, setPayer] = useState('Bartok');
+    const [payee, setPayee] = useState('Rumba');
     const [amountPaid, setAmountPaid] = useState('')
     const [inputError, setInputError] = useState(false)
 
@@ -39,8 +39,8 @@ function AddPayment({activeUsers, updateActiveUsers}: Props){
         setInputError(false)
         // Update active users => display payment in `BalanceSheet`
         // console.log(activeUsers.filter(user => {return user.name == payee})[0].creditors)
-        let payee_creditors = activeUsers.filter(user => {return user.name == payee})[0].creditors;
-        let payer_creditors = activeUsers.filter(user => {return user.name == payer})[0].creditors;
+        let payee_creditors = activeUsers.filter(user => {return user.name === payee})[0].creditors;
+        let payer_creditors = activeUsers.filter(user => {return user.name === payer})[0].creditors;
 
         // STEP 1: Init payment and create debt between payee and payer
         // FIXME: add `simplifyUnilateralCredit`

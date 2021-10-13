@@ -5,6 +5,7 @@ import AddPayment from "./addPayment";
 import AddUser from "./addUser";
 import BalanceSheet from "./BalanceSheet";
 import Header from "./Header";
+import DeleteUser from './deleteUser'
 import Footer from "./Footer";
 import {Props, UserInterface} from '../interfaces/interfaces'
 // import users data
@@ -17,36 +18,42 @@ import {createInterface} from "readline";
 // import green from '@material-ui/core/colors/green';
 function App() {
 
-    const [activeUsers, updateActiveUsers] = useState<UserInterface[]>(users);
+    const [activeUsers, updateActiveUsers] = useState<UserInterface[]>([]);
+
+    // useEffect(() => {
+    //     let newUser = {
+    //         'name': 'Rumba',
+    //         'id': '3',
+    //         'totalCredit': '-10',
+    //         'debtors': [],
+    //         'creditors':[]
+    //     };
+    //     fetch('/api',{
+    //         method: "POST",
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(newUser)
+    //     })
+    //         .then(function(res){
+    //             if (res.ok){return res.json()}
+    //         })
+    //         .then(function(value){console.log(value)})
+    // }, [])
 
     useEffect(() => {
-        let newUser = {
-            'name': 'Bartok',
-            'id': '1',
-            'totalCredit': '0',
-            'debtors': [],
-            'creditors':[]
-        };
-        fetch('/api',{
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newUser)
-        })
+        console.log('useEffect called from App.tsx!')
+        fetch("/api", {method: "GET"})
             .then(function(res){
                 if (res.ok){return res.json()}
             })
-            .then(function(value){console.log(value)})
-    }, [])
-
-    useEffect(() => {
-        fetch("/api")
-            .then((res) => res.json())
-            .then((value) => console.log(value));
+            .then((value) => {
+                console.log(JSON.stringify(value));
+                updateActiveUsers(value);
+            });
         },
-        [activeUsers]);
+        []);
 
 
   return (
@@ -55,6 +62,7 @@ function App() {
           <BalanceSheet activeUsers={activeUsers}/>
           <AddUser activeUsers = {activeUsers} updateActiveUsers = {updateActiveUsers}/>
           <AddPayment activeUsers = {activeUsers} updateActiveUsers={updateActiveUsers}/>
+          <DeleteUser activeUsers={activeUsers} updateActiveUsers = {updateActiveUsers}/>
           <Footer/>
     </div>
   )
