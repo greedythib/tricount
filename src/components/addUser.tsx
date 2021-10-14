@@ -23,6 +23,8 @@ import Fab from '@mui/material/Fab';
 import CheckIcon from '@mui/icons-material/Check';
 import SaveIcon from '@mui/icons-material/Save';
 
+const uuidv4 = require("uuid/v4");
+const {ObjectId} = require('mongoose');
 function AddUser({activeUsers, updateActiveUsers}: Props){
     // Retrieve list of users
     let users_list: string[] = [];
@@ -83,13 +85,13 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
                     }, 750);
             }
             // update parent state
-            let new_user_id:string = String(activeUsers.length + 1);
-            console.log(new_user_id);
+            let new_user_id:string = uuidv4();
+            let mongoID: string = '';
             if (checkBox){
                 console.log('send POST request to backend in order to add new user to MongoDB')
                 let user = {
-                    'name': newUser,
                     'id': new_user_id,
+                    'name': newUser,
                     'totalCredit': '0',
                     'debtors': [],
                     'creditors':[]
@@ -105,14 +107,22 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
                     .then(function(res){
                         if (res.ok){return res.json()}
                     })
-                    .then(function(value){console.log(value)})
+                    .then(function(value){
+                        mongoID = value;
+                    })
             }
             updateActiveUsers(
                 [...activeUsers,
-                    {'id' : new_user_id, 'name': newUser, totalCredit : '0', 'creditors':[], 'debtors':[]}]
+                    {
+                        '_id': mongoID,
+                        'id' : new_user_id,
+                        'name': newUser,
+                        totalCredit : '0',
+                        'creditors':[],
+                        'debtors':[]
+                    }]
             );
             setNewUser('');
-            console.log('parent state updated');
         }
     }
 

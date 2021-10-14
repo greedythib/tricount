@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 // Interface for creditor/debtors
 export interface UserInterfaceMinimal {
     name: string;
@@ -5,6 +6,7 @@ export interface UserInterfaceMinimal {
 }
 // Interface for user
 export interface UserInterface {
+    _id: string;
     id:string;
     name:string;
     totalCredit:string;

@@ -1,8 +1,11 @@
 import '../style/deleteUser.css'
 import * as React from "react";
 import {useState} from "react";
-import {activeUserProp, UserInterface, Props} from '../interfaces/interfaces'
+import {Props} from '../interfaces/interfaces'
+
 // import Material UI icons
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,20 +17,34 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
 function DeleteUser({activeUsers, updateActiveUsers}: Props){
-
     const [text, setText] = useState('');
-    // const [userToDelete, setUserToDelete] = useState<UserInterface>(activeUsers[0]);
     const [userToDelete, setUserToDelete] = useState<String>('Bartok');
     const [deleteCheckButton, setDeleteCheckButton] = useState(false);
     const [allowDeletion, setDeletionState] = useState(true);
+    const [open, setOpen] = useState(false);
 
     function handleButton(){
         console.log('click on button');
         // console.log(activeUsers[1]?._id);
         setText(JSON.stringify(activeUsers[0]));
         // setText(activeUsers[0]._id);
-        fetch('/api/Bartok',{
-                method: "GET",
+        let updatedUser = {
+            id: activeUsers[0].id,
+            name: 'Bartok',
+            totalCredit: activeUsers[0].totalCredit,
+            creditors: activeUsers[0].creditors,
+            debtors: activeUsers[0].debtors,
+        };
+        let userToDeleteMongoID:string = activeUsers.filter(
+            (user) => {return user.name === 'Bartok'}
+        )[0]._id;
+        fetch('/api/' + userToDeleteMongoID,{
+                method: "PUT",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                            },
+                body: JSON.stringify(updatedUser)
             }
             )
             .then(
@@ -39,12 +56,10 @@ function DeleteUser({activeUsers, updateActiveUsers}: Props){
                 function(value){
                     setText(JSON.stringify(value));
                 }
-            );
+            )
+            .catch((error) => setText(error));
     }
     function handleDeleteSelect(e: any){
-        // console.log('Checking user before sending delete http request...');
-        // console.log(e.target.value)
-        // console.log(JSON.stringify(activeUsers.filter((user) => {return user.name === e.target.value})[0].creditors));
         if (activeUsers.filter((user) => {return user.name === e.target.value})[0].creditors.length !== 0){
             console.log(`${e.target.value} still has outstanding debt`);
             // TODO trigger warning & set error
@@ -60,9 +75,12 @@ function DeleteUser({activeUsers, updateActiveUsers}: Props){
     }
     function handleDeleteClick(){
         console.log('about to delete', userToDelete, '...')
+        let userToDeleteMongoID:string = activeUsers.filter(
+            (user) => {return user.name === userToDelete}
+        )[0]._id;
         if (deleteCheckButton){
             console.log('Erase user from MongoDB');
-            let api_endpoint = '/api/' + userToDelete;
+            let api_endpoint = '/api/' + userToDeleteMongoID;
             fetch(api_endpoint, {
                 method: "DELETE"
             })
@@ -125,10 +143,15 @@ function DeleteUser({activeUsers, updateActiveUsers}: Props){
                     <DeleteIcon fontSize="inherit" />
                 </IconButton>
             </Stack>
-            {/*<br/>*/}
-            {/*<Alert onClose={() => {}} severity = "warning">*/}
-            {/*    {`${userToDelete} still has outstanding debts...`}*/}
-            {/*</Alert>*/}
+            <br/>
+            <Collapse in={!allowDeletion}>
+                <Alert
+                    severity = "warning"
+                    sx={{ mb: 2 }}
+                >
+                    {`Cannot delete ${userToDelete} because he/she/it has outstanding debts!`}
+                </Alert>
+            </Collapse>
         </div>
     )
 }

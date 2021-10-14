@@ -7,7 +7,7 @@ exports.createUser = (req, res, next) => {
         ...req.body
     });
     user.save()
-        .then(() => {res.status(201).json({ message: 'New user signed up!'});})
+        .then(() => {res.status(201).json(user._id);})
         .catch(error => {res.status(500).json({ error });});
 };
 
@@ -29,20 +29,21 @@ exports.getUser = (req, res, next ) => {
 exports.modifyUser = (req, res, next) => {
     console.log('[backend] Receiving a PUT request to update a user');
     const user = new User({
+        _id: req.params.id,
         id: req.body.id,
         name: req.body.name,
         totalCredit: req.body.totalCredit,
         debtors: req.body.debtors,
         creditors: req.body.creditors,
     })
-    User.updateOne({name: req.params.name}, user)
+    User.updateOne({_id: req.params.id}, user)
         .then(() => res.status(201).json({message: 'User updated!'}))
         .catch((error) => res.status(400).json({error}));
 };
 
 exports.deleteUser = (req, res, next ) => {
   console.log('[backend] Receiving DELETE request');
-  User.deleteOne({name: req.params.name}) //FIXME: does not throw error when user not found
+  User.deleteOne({_id: req.params.id}) //FIXME: does not throw error when user not found
       .then(() => res.status(200).json({message: 'User deleted!'}))
       .catch((error) => res.status(400).json({error}));
 };

@@ -7,7 +7,7 @@ import BalanceSheet from "./BalanceSheet";
 import Header from "./Header";
 import DeleteUser from './deleteUser'
 import Footer from "./Footer";
-import {Props, UserInterface} from '../interfaces/interfaces'
+import {UserInterface} from '../interfaces/interfaces'
 // import users data
 import {users} from '../data/usersList'
 import {createInterface} from "readline";
@@ -49,12 +49,11 @@ function App() {
                 if (res.ok){return res.json()}
             })
             .then((value) => {
-                console.log(JSON.stringify(value));
+                console.log(value);
                 updateActiveUsers(value);
             });
         },
         []);
-
 
   return (
     <div className="App">
