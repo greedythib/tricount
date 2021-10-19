@@ -1,0 +1,74 @@
+.user-tabs {
+    display: flex;
+    flex-direction: row;
+    margin: 0px 52px;
+    border-bottom: solid .2px darkblue;
+}
+
+.user-tab-header{
+    color:darkblue;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    /*border-bottom: solid .2px darkblue;*/
+    /*border-right: solid .5px lightgray;*/
+    border-radius: 5px;
+    padding: 0px 15px 0px 15px;
+}
+
+#first-header {
+    padding-left: 0px;
+}
+
+.user-tab-header:hover {
+    background-color: lightgray;
+    color: darkblue;
+}
+.user-header-logo{
+    padding-right: 10px;
+}
+
+.router-link{
+    text-decoration: none
+}
+router-link:visited, router-link:hover, router-link:active{
+    color: inherit;
+}
+
+/*.delete-user-header{*/
+/*    color:darkblue;*/
+/*    font-weight: bold;*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    align-items: center;*/
+/*    justify-content: flex-start;*/
+/*    border-bottom: solid .2px darkblue;*/
+/*    padding-left: 25px;*/
+/*    border-radius: 5px;*/
+/*}*/
+
+/*.delete-user-header:hover {*/
+/*    background-color: lightgray;*/
+/*}*/
+
+/*#delete-user-header-logo{*/
+/*    padding-right: 10px;*/
+/*}*/
+
+#select-user-to-delete {
+    width: 100px;
+}
+
+/*.display-user-header:hover {*/
+/*    background-color: lightgray;*/
+/*}*/
+
+/*#display-user-header-logo{*/
+/*    padding-right: 10px;*/
+/*}*/
+
+#select-user-to-display{
+    width: 200px;
+}

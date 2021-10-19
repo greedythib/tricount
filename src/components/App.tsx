@@ -1,11 +1,14 @@
 import logo from '../logo.svg';
 import {useEffect, useState} from 'react'
+import { BrowserRouter as Router , Route} from 'react-router-dom'
 import '../style/App.css';
+import UserHeader from "./UserHeader";
 import AddPayment from "./addPayment";
-import AddUser from "./addUser";
+import AddUser from "../pages /addUser";
+import DeleteUser from '../pages /deleteUser'
+import DisplayUser from '../pages /displayUser'
 import BalanceSheet from "./BalanceSheet";
 import Header from "./Header";
-import DeleteUser from './deleteUser'
 import Footer from "./Footer";
 import {UserInterface} from '../interfaces/interfaces'
 // import users data
@@ -57,12 +60,23 @@ function App() {
 
   return (
     <div className="App">
-          <Header/>
-          <BalanceSheet activeUsers={activeUsers}/>
-          <AddUser activeUsers = {activeUsers} updateActiveUsers = {updateActiveUsers}/>
-          <AddPayment activeUsers = {activeUsers} updateActiveUsers={updateActiveUsers}/>
-          <DeleteUser activeUsers={activeUsers} updateActiveUsers = {updateActiveUsers}/>
-          <Footer/>
+        <Router>
+            <Header/>
+            <BalanceSheet activeUsers={activeUsers}/>
+            <UserHeader/>
+            <Route exact path = '/'>
+                <AddUser activeUsers = {activeUsers} updateActiveUsers = {updateActiveUsers}/>
+            </Route>
+            <Route path = '/delete-user'>
+                <DeleteUser activeUsers={activeUsers} updateActiveUsers = {updateActiveUsers}/>
+            </Route>
+            <Route path = '/display-user'>
+                <DisplayUser activeUsers={activeUsers}/>
+            </Route>
+            <AddPayment activeUsers = {activeUsers} updateActiveUsers={updateActiveUsers}/>
+            <Footer/>
+        </Router>
+
     </div>
   )
 }

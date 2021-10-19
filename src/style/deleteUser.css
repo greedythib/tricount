@@ -2,21 +2,3 @@
     padding-left: 52px;
     padding-right: 52px;
 }
-
-.delete-user-header{
-    color:darkblue;
-    font-weight: bold;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    border-bottom: solid .2px darkblue;
-}
-
-#delete-user-header-logo{
-    padding-right: 10px;
-}
-
-#select-user-to-delete {
-    width: 100px;
-}

@@ -1,6 +1,6 @@
-import '../style/addUser.css'
+import '../../style/addUser.css'
 import { useState, useEffect } from 'react'
-import {Props} from '../interfaces/interfaces'
+import {Props} from '../../interfaces/interfaces'
 // import Material UI components
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -132,10 +132,10 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
 
     return(
         <div className='add-user-div'>
-            <div className='add-user-header'>
-                <span id = 'add-user-header-logo'> <PersonAddIcon/> </span>
-                Add new user
-            </div>
+            {/*<div className='add-user-header'>*/}
+            {/*    <span id = 'add-user-header-logo'> <PersonAddIcon/> </span>*/}
+            {/*    Add new user*/}
+            {/*</div>*/}
             {/*<div className = 'add-user-input'>*/}
                 {/*<div id = 'add-user-input-field'>*/}
                     <Stack direction = 'row' spacing = {2} justifyContent = 'center' mt = {5}>

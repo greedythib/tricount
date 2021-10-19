@@ -1,7 +1,7 @@
-import '../style/deleteUser.css'
+import '../../style/deleteUser.css'
 import * as React from "react";
 import {useState} from "react";
-import {Props} from '../interfaces/interfaces'
+import {Props} from '../../interfaces/interfaces'
 
 // import Material UI icons
 import Collapse from '@mui/material/Collapse';
@@ -17,7 +17,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
 function DeleteUser({activeUsers, updateActiveUsers}: Props){
+
+    //
     const [text, setText] = useState('');
+    //
     const [userToDelete, setUserToDelete] = useState<String>('Bartok');
     const [deleteCheckButton, setDeleteCheckButton] = useState(false);
     const [allowDeletion, setDeletionState] = useState(true);
@@ -25,19 +28,20 @@ function DeleteUser({activeUsers, updateActiveUsers}: Props){
 
     function handleButton(){
         console.log('click on button');
-        // console.log(activeUsers[1]?._id);
-        setText(JSON.stringify(activeUsers[0]));
+        console.log(activeUsers[0].totalCredit);
+        // setText(JSON.stringify(activeUsers[0]));
         // setText(activeUsers[0]._id);
         let updatedUser = {
             id: activeUsers[0].id,
-            name: 'Bartok',
-            totalCredit: activeUsers[0].totalCredit,
+            name: activeUsers[0].name,
+            totalCredit: 666,
             creditors: activeUsers[0].creditors,
             debtors: activeUsers[0].debtors,
         };
-        let userToDeleteMongoID:string = activeUsers.filter(
-            (user) => {return user.name === 'Bartok'}
-        )[0]._id;
+        let userToDeleteMongoID:string = activeUsers[0]._id;
+        //     = activeUsers.filter(
+        //     (user) => {return user.name === 'Bartok'}
+        // )[0]._id;
         fetch('/api/' + userToDeleteMongoID,{
                 method: "PUT",
                 headers: {
@@ -99,10 +103,10 @@ function DeleteUser({activeUsers, updateActiveUsers}: Props){
 
     return(
         <div className = 'delete-user'>
-            <div className='delete-user-header'>
-                <span id = 'delete-user-header-logo'> <PersonRemoveIcon/> </span>
-                Delete User
-            </div>
+            {/*<div className='delete-user-header'>*/}
+            {/*    <span id = 'delete-user-header-logo'> <PersonRemoveIcon/> </span>*/}
+            {/*    Delete User*/}
+            {/*</div>*/}
 
             <button onClick={handleButton}>
                 Button

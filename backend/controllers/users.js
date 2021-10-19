@@ -27,7 +27,7 @@ exports.getUser = (req, res, next ) => {
 };
 
 exports.modifyUser = (req, res, next) => {
-    console.log('[backend] Receiving a PUT request to update a user');
+    console.log('[backend] Receiving a PUT request to modify a user');
     const user = new User({
         _id: req.params.id,
         id: req.body.id,
