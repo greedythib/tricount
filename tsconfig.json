@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES6",
     "lib": [
-      "es5",
+//      "es5",
       "es6",
       "dom",
       "DOM",

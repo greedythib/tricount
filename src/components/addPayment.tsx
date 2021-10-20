@@ -1,4 +1,4 @@
-import '../style/addPayment.css'
+import '../utils/style/css/addPayment.css'
 import {removeCreditor, updateCreditor} from "../utils/handleUsers";
 import { useState, useEffect } from 'react'
 import {Props} from '../interfaces/interfaces'

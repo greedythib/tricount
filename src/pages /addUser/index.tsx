@@ -1,4 +1,4 @@
-import '../../style/addUser.css'
+import '../../utils/style/css/addUser.css'
 import { useState, useEffect } from 'react'
 import {Props} from '../../interfaces/interfaces'
 // import Material UI components

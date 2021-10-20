@@ -1,4 +1,4 @@
-import '../style/BalanceSheet.css'
+import '../utils/style/css/BalanceSheet.css'
 import BalanceItem from "./BalanceItem";
 import {activeUserProp, Props, UserInterface} from '../interfaces/interfaces'
 // import material UI components

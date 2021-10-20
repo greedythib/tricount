@@ -1,7 +1,9 @@
 import logo from '../logo.svg';
 import {useEffect, useState} from 'react'
 import { BrowserRouter as Router , Route} from 'react-router-dom'
-import '../style/App.css';
+import '../utils/style/css/App.css';
+import {GlobalStyle} from "../utils/style/styled-components/my-styled-components";
+import {ThemeProvider} from "../utils/context/theme-context";
 import UserHeader from "./UserHeader";
 import AddPayment from "./addPayment";
 import AddUser from "../pages /addUser";
@@ -61,20 +63,23 @@ function App() {
   return (
     <div className="App">
         <Router>
-            <Header/>
-            <BalanceSheet activeUsers={activeUsers}/>
-            <UserHeader/>
-            <Route exact path = '/'>
-                <AddUser activeUsers = {activeUsers} updateActiveUsers = {updateActiveUsers}/>
-            </Route>
-            <Route path = '/delete-user'>
-                <DeleteUser activeUsers={activeUsers} updateActiveUsers = {updateActiveUsers}/>
-            </Route>
-            <Route path = '/display-user'>
-                <DisplayUser activeUsers={activeUsers}/>
-            </Route>
-            <AddPayment activeUsers = {activeUsers} updateActiveUsers={updateActiveUsers}/>
-            <Footer/>
+            <ThemeProvider>
+                <GlobalStyle/>
+                <Header/>
+                <BalanceSheet activeUsers={activeUsers}/>
+                <UserHeader/>
+                <Route exact path = '/'>
+                    <AddUser activeUsers = {activeUsers} updateActiveUsers = {updateActiveUsers}/>
+                </Route>
+                <Route path = '/delete-user'>
+                    <DeleteUser activeUsers={activeUsers} updateActiveUsers = {updateActiveUsers}/>
+                </Route>
+                <Route path = '/display-user'>
+                    <DisplayUser activeUsers={activeUsers}/>
+                </Route>
+                <AddPayment activeUsers = {activeUsers} updateActiveUsers={updateActiveUsers}/>
+                <Footer/>
+            </ThemeProvider>
         </Router>
 
     </div>

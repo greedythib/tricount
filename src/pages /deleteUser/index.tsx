@@ -1,4 +1,4 @@
-import '../../style/deleteUser.css'
+import '../../utils/style/css/deleteUser.css'
 import * as React from "react";
 import {useState} from "react";
 import {Props} from '../../interfaces/interfaces'
@@ -108,9 +108,9 @@ function DeleteUser({activeUsers, updateActiveUsers}: Props){
             {/*    Delete User*/}
             {/*</div>*/}
 
-            <button onClick={handleButton}>
-                Button
-            </button>
+            {/*<button onClick={handleButton}>*/}
+            {/*    Button*/}
+            {/*</button>*/}
             <p>{text}</p>
 
             <Stack direction = 'row' spacing = {2} justifyContent = 'center' mt = {5}>
