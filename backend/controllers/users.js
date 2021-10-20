@@ -21,7 +21,7 @@ exports.getAllUsers = (req, res, next) => {
 
 exports.getUser = (req, res, next ) => {
     console.log('[backend] receiving a GET request using `findOne` method')
-    User.findOne({name : req.params.name}) //FIXME: does not throw error when user not found
+    User.findOne({name : req.params.id}) //FIXME: does not throw error when user not found
         .then((user) => res.status(200).json({user}))
         .catch((error) => res.status(404).json({error}));
 };
