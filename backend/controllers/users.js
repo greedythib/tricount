@@ -32,7 +32,7 @@ exports.modifyUser = (req, res, next) => {
         _id: req.params.id,
         id: req.body.id,
         name: req.body.name,
-        totalCredit: req.body.totalCredit,
+        totalDebt: req.body.totalCredit,
         debtors: req.body.debtors,
         creditors: req.body.creditors,
     })

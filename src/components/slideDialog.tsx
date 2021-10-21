@@ -23,6 +23,20 @@ export default function AlertDialogSlide({user}: userProp) {
         setOpen(false);
     };
 
+    // TODO: pass to child element
+    const hasCreditorsItem = <div>
+        <p> {user.name} owes money to: </p>
+        <ul>{user.creditors.map(
+        (creditor, index) => (<li key = {index}>  {creditor.name} (${creditor.value}) </li>))}
+        </ul></div>;
+    const noCreditorItem = <p> No creditors </p>;
+    const hasDebtorsItem = <div>
+        <p> Users who owe money to {user.name}: </p>
+        <ul>{user.debtors.map(
+            (debtor, index) => (<li key = {index}>  {debtor.name} (${debtor.value}) </li>))}
+        </ul></div>;
+    const noDebtorItem = <p> No debtors </p>;
+
     return (
         <div>
             <Button
@@ -43,15 +57,21 @@ export default function AlertDialogSlide({user}: userProp) {
                 <DialogTitle> About {user.name}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        {/*Display {user.name} information by calling child component*/}
-                        {/*TODO: wrap it as a new child component or styled-components for `<p>` below*/}
-                        <span> User ID: {user.id}</span>
-                        <span> User name : {user.name} </span>
-                        <span> User outstanding debt: ${user.totalCredit} </span>
-                         {/*TODO: fix array iteration*/}
-                        {/*<span> User creditors list: {user.creditors}  </span>*/}
-                        {/*<span> User debtors list: {user.debtors}</span>*/}
                     </DialogContentText>
+                    <p> User ID: {user.id}</p>
+                    <p> User name : {user.name} </p>
+                    {/*<p> User outstanding debt: ${user.totalDebt} </p>*/}
+                    {
+                        parseInt(user.totalDebt) === 0 && <p> No credit/debt </p>
+                    }
+                    {
+                        parseInt(user.totalDebt) > 0 && <p> {user.name} has an outstanding debt of ${user.totalDebt} </p>
+                    }
+                    {
+                        parseInt(user.totalDebt) < 0 && <p> {user.name} has an outstanding credit of ${- parseInt(user.totalDebt)}</p>
+                    }
+                    {user.creditors.length !== 0? hasCreditorsItem: noCreditorItem}
+                    {user.debtors.length !== 0? hasDebtorsItem: noDebtorItem}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}> Close </Button>

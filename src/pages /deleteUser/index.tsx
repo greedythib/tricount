@@ -28,7 +28,7 @@ function DeleteUser({activeUsers, updateActiveUsers}: Props){
 
     function handleButton(){
         console.log('click on button');
-        console.log(activeUsers[0].totalCredit);
+        console.log(activeUsers[0].totalDebt);
         // setText(JSON.stringify(activeUsers[0]));
         // setText(activeUsers[0]._id);
         let updatedUser = {

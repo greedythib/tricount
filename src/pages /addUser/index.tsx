@@ -92,7 +92,7 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
                 let user = {
                     'id': new_user_id,
                     'name': newUser,
-                    'totalCredit': '0',
+                    'totalDebt': '0',
                     'debtors': [],
                     'creditors':[]
                 };
@@ -117,7 +117,7 @@ function AddUser({activeUsers, updateActiveUsers}: Props){
                         '_id': mongoID,
                         'id' : new_user_id,
                         'name': newUser,
-                        totalCredit : '0',
+                        'totalDebt' : '0',
                         'creditors':[],
                         'debtors':[]
                     }]

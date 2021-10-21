@@ -32,7 +32,7 @@ const StyledHeader = styled.div<styledHeaderProps>`
 `
 
 function UserHeader(){
-    const [isTab1Selected, setTab1Selection] = useState(false)
+    const [isTab1Selected, setTab1Selection] = useState(true)
     const [isTab2Selected, setTab2Selection] = useState(false)
     const [isTab3Selected, setTab3Selection] = useState(false)
     return(

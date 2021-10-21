@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {activeUserProp, userProp, UserInterface} from '../../interfaces/interfaces'
+import {activeUserProp, userProp, UserInterface, defaultUser} from '../../interfaces/interfaces'
 import AlertDialogSlide from '../../components/slideDialog'
 import '../../utils/style/css/displayUser.css'
 // ----- Import MaterialUI components -----
@@ -14,8 +14,7 @@ import * as React from "react";
 
 function DisplayUser({activeUsers}: activeUserProp) {
 
-    let initUser: UserInterface = {_id: '', id : '', name: '', totalCredit: '', creditors : [], debtors: []};
-    const [userToDisplay, setUserToDisplay] = useState<UserInterface>(initUser);
+    const [userToDisplay, setUserToDisplay] = useState<UserInterface>(defaultUser);
 
     return(
         <div className= 'delete-user'>

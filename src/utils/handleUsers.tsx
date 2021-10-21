@@ -1,7 +1,7 @@
 import {UserInterfaceMinimal, UserInterface} from '../interfaces/interfaces'
 // FIXME: add interfaces
 
-export function removeCreditor(creditor: string, creditors: UserInterfaceMinimal[]){
+export function remove(creditor: string, creditors: UserInterfaceMinimal[]){
     let creditorIndex = creditors.indexOf(creditors.filter(cred => {return cred.name == creditor})[0])
     if (creditorIndex > -1){
         creditors.splice(creditorIndex, 1)
@@ -9,26 +9,8 @@ export function removeCreditor(creditor: string, creditors: UserInterfaceMinimal
     return(creditors)
 }
 
-// export function simplifyCredit(creditorA, debtA, creditorB, debtB){
-//     if (parseInt(amountPaid) == parseInt(payerDebt)){
-//         // then debts compensate
-//         payer_creditors = removeCreditor(payee, payer_creditors);
-//     }
-//     else if ( parseInt(amountPaid) > parseInt(payerDebt)){
-//         // then 1_ we erase payer debts
-//         payer_creditors = removeCreditor(payee, payer_creditors);
-//         // and 2_ create a debt for payee
-//         let deductedCredit = String(parseInt(amountPaid) - parseInt(payerDebt));
-//         payee_creditors.push({'name': payer, 'value':deductedCredit});
-//     }
-//     else{
-//         // the we reduce payer debt
-//         let newPayerDebt = parseInt(payerDebt) - parseInt(amountPaid);
-//         payer_creditors.filter(creditor => {return creditor.name == payee})[0].value = String(newPayerDebt);
-//     }
-// }
 
-export function updateCreditor(creditor: string, creditors: UserInterfaceMinimal[], amount: number){
+export function update(creditor: string, creditors: UserInterfaceMinimal[], amount: number){
     // CASE 1: Not a creditor yet => add a new creditor
     if (creditors.filter(cred => {return cred.name == creditor}).length===0){
         if (amount > 0){
@@ -44,7 +26,7 @@ export function updateCreditor(creditor: string, creditors: UserInterfaceMinimal
         }
         else if (newCredit == 0){
             // FIXME
-            creditors = removeCreditor(creditor, creditors)
+            creditors = remove(creditor, creditors)
         }
 
     }

@@ -9,7 +9,7 @@ export interface UserInterface {
     _id: string;
     id:string;
     name:string;
-    totalCredit:string;
+    totalDebt:string;
     debtors: UserInterfaceMinimal[];
     creditors: UserInterfaceMinimal[];
 }
@@ -25,4 +25,13 @@ export interface userProp{
 export interface Props {
     activeUsers: UserInterface[];
     updateActiveUsers: React.Dispatch<React.SetStateAction<UserInterface[]>>
+}
+
+export const defaultUser: UserInterface = {
+    id: '0',
+    _id: '0',
+    name : '',
+    totalDebt: '',
+    creditors: [],
+    debtors: []
 }

@@ -36,3 +36,9 @@
     margin-top: 25px;
     margin-left: 10px;
 }
+#select-payer-textfield{
+    width: 90px;
+}
+#select-payee-textfield{
+    width: 90px;
+}
