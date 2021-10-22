@@ -1,9 +1,14 @@
-import {useEffect, useState} from "react";
-import {activeUserProp, userProp, UserInterface, defaultUser} from '../../interfaces/interfaces'
-import AlertDialogSlide from '../../components/slideDialog'
-import '../../utils/style/css/displayUser.css'
+import { useEffect, useState } from "react";
+import {
+  activeUserProp,
+  userProp,
+  UserInterface,
+  defaultUser,
+} from "../../interfaces/interfaces";
+import AlertDialogSlide from "../../components/slideDialog";
+import "../../utils/style/css/displayUser.css";
 // ----- Import MaterialUI components -----
-import {Stack} from "@mui/material";
+import { Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 // import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,36 +17,38 @@ import MenuItem from "@mui/material/MenuItem";
 // import DeleteIcon from "@mui/icons-material/Delete";
 import * as React from "react";
 
-function DisplayUser({activeUsers}: activeUserProp) {
+function DisplayUser({ activeUsers }: activeUserProp) {
+  const [userToDisplay, setUserToDisplay] =
+    useState<UserInterface>(defaultUser);
 
-    const [userToDisplay, setUserToDisplay] = useState<UserInterface>(defaultUser);
+  return (
+    <div className="delete-user">
+      <Stack direction="row" spacing={2} justifyContent="center" mt={5}>
+        <TextField
+          label="Select User to display info"
+          select
+          value={userToDisplay.name}
+          color="info"
+          // error = {!allowDeletion}
+          id="select-user-to-display"
+          onChange={(e) => {
+            setUserToDisplay(
+              activeUsers.filter((user) => {
+                return user.name === e.target.value;
+              })[0]
+            );
+          }}
+        >
+          {activeUsers.map((user) => (
+            <MenuItem key={user.id} value={user.name}>
+              {user.name}
+            </MenuItem>
+          ))}
+        </TextField>
+        <AlertDialogSlide user={userToDisplay} />
+      </Stack>
+    </div>
+  );
+}
 
-    return(
-        <div className= 'delete-user'>
-            <Stack direction = 'row' spacing = {2} justifyContent = 'center' mt = {5}>
-                <TextField label = 'Select User to display info'
-                           select
-                           value = {userToDisplay.name}
-                           color = 'info'
-                           // error = {!allowDeletion}
-                           id = 'select-user-to-display'
-                           onChange = {(e) => {
-                               setUserToDisplay(activeUsers.filter(
-                                   (user) => {return user.name === e.target.value})[0])
-                           }}
-                >
-                    {
-                        activeUsers.map((user) => (
-                            <MenuItem key = {user.id} value = {user.name}>
-                                {user.name}
-                            </MenuItem>
-                        ))
-                    }
-                </TextField>
-                <AlertDialogSlide user = {userToDisplay} />
-            </Stack>
-        </div>
-    )
-};
-
-export default DisplayUser
+export default DisplayUser;

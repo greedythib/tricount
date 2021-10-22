@@ -61,14 +61,6 @@ router-link:visited, router-link:hover, router-link:active{
     width: 100px;
 }
 
-/*.display-user-header:hover {*/
-/*    background-color: lightgray;*/
-/*}*/
-
-/*#display-user-header-logo{*/
-/*    padding-right: 10px;*/
-/*}*/
-
 #select-user-to-display{
     width: 200px;
 }

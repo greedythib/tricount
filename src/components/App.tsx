@@ -17,10 +17,6 @@ import {UserInterface} from '../interfaces/interfaces'
 import {users} from '../data/usersList'
 import {createInterface} from "readline";
 
-// Personalize theme
-// import { ThemeProvider } from "@material-ui/styles";
-// import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-// import green from '@material-ui/core/colors/green';
 function App() {
 
     const [activeUsers, updateActiveUsers] = useState<UserInterface[]>([]);
@@ -48,7 +44,7 @@ function App() {
     // }, [])
 
     useEffect(() => {
-        console.log('useEffect called from App.tsx!')
+        // console.log('useEffect called from App.tsx!')
         fetch("/api", {method: "GET"})
             .then(function(res){
                 if (res.ok){return res.json()}
