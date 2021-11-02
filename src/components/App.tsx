@@ -55,6 +55,27 @@ function App() {
   //     });
   // }, []);
 
+  // Hook for retrieving data from browser local storage
+  useEffect(() => {
+    let savedActiveUsers: UserInterface[] = [];
+    if (activeUsers.length === 0) {
+      console.log("init step");
+      try {
+        let saved: any = localStorage.getItem("activeUsers");
+        savedActiveUsers = JSON.parse(saved);
+      } catch (error: any) {
+        console.log(error);
+      }
+      console.log("savedActiveUser", savedActiveUsers);
+      updateActiveUsers(savedActiveUsers);
+    }
+  }, []);
+
+  // Hook for updating data to browser local storage
+  useEffect(() => {
+    localStorage.setItem("activeUsers", JSON.stringify(activeUsers));
+  }, [activeUsers]);
+
   return (
     <div className="App">
       <Router>

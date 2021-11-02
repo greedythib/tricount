@@ -25,40 +25,40 @@ function DeleteUser({ activeUsers, updateActiveUsers }: Props) {
   const [allowDeletion, setDeletionState] = useState(true);
   const [open, setOpen] = useState(false);
 
-  function handleButton() {
-    console.log("click on button");
-    console.log(activeUsers[0].totalDebt);
-    // setText(JSON.stringify(activeUsers[0]));
-    // setText(activeUsers[0]._id);
-    let updatedUser = {
-      id: activeUsers[0].id,
-      name: activeUsers[0].name,
-      totalCredit: 666,
-      creditors: activeUsers[0].creditors,
-      debtors: activeUsers[0].debtors,
-    };
-    let userToDeleteMongoID: string = activeUsers[0]._id;
-    //     = activeUsers.filter(
-    //     (user) => {return user.name === 'Bartok'}
-    // )[0]._id;
-    fetch("/api/" + userToDeleteMongoID, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedUser),
-    })
-      .then(function (res) {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then(function (value) {
-        setText(JSON.stringify(value));
-      })
-      .catch((error) => setText(error));
-  }
+  // function handleButton() {
+  //   console.log("click on button");
+  //   console.log(activeUsers[0].totalDebt);
+  //   // setText(JSON.stringify(activeUsers[0]));
+  //   // setText(activeUsers[0]._id);
+  //   let updatedUser = {
+  //     id: activeUsers[0].id,
+  //     name: activeUsers[0].name,
+  //     totalCredit: 666,
+  //     creditors: activeUsers[0].creditors,
+  //     debtors: activeUsers[0].debtors,
+  //   };
+  //   // let userToDeleteMongoID: string = activeUsers[0]._id;
+  //   // //     = activeUsers.filter(
+  //   // //     (user) => {return user.name === 'Bartok'}
+  //   // // )[0]._id;
+  //   // fetch("/api/" + userToDeleteMongoID, {
+  //   //   method: "PUT",
+  //   //   headers: {
+  //   //     Accept: "application/json",
+  //   //     "Content-Type": "application/json",
+  //   //   },
+  //   //   body: JSON.stringify(updatedUser),
+  //   // })
+  //   //   .then(function (res) {
+  //   //     if (res.ok) {
+  //   //       return res.json();
+  //   //     }
+  //   //   })
+  //   //   .then(function (value) {
+  //   //     setText(JSON.stringify(value));
+  //   //   })
+  //   //   .catch((error) => setText(error));
+  // }
   function handleDeleteSelect(e: any) {
     if (
       activeUsers.filter((user) => {
@@ -80,24 +80,7 @@ function DeleteUser({ activeUsers, updateActiveUsers }: Props) {
   }
   function handleDeleteClick() {
     console.log("about to delete", userToDelete, "...");
-    let userToDeleteMongoID: string = activeUsers.filter((user) => {
-      return user.name === userToDelete;
-    })[0]._id;
-    if (deleteCheckButton) {
-      console.log("Erase user from MongoDB");
-      let api_endpoint = "/api/" + userToDeleteMongoID;
-      fetch(api_endpoint, {
-        method: "DELETE",
-      })
-        .then(function (res) {
-          if (res.ok) {
-            return res.json();
-          }
-        })
-        .then(function (value) {
-          console.log(value);
-        });
-    }
+
     // TODO add dialog window to confirm deletion
     let activeUsers_tmp = activeUsers.filter((user) => {
       return user.name !== userToDelete;
@@ -108,14 +91,6 @@ function DeleteUser({ activeUsers, updateActiveUsers }: Props) {
 
   return (
     <div className="delete-user">
-      {/*<div className='delete-user-header'>*/}
-      {/*    <span id = 'delete-user-header-logo'> <PersonRemoveIcon/> </span>*/}
-      {/*    Delete User*/}
-      {/*</div>*/}
-
-      {/*<button onClick={handleButton}>*/}
-      {/*    Button*/}
-      {/*</button>*/}
       <p>{text}</p>
 
       <Stack direction="row" spacing={2} justifyContent="center" mt={5}>
@@ -133,17 +108,17 @@ function DeleteUser({ activeUsers, updateActiveUsers }: Props) {
             </MenuItem>
           ))}
         </TextField>
-        <FormControlLabel
-          control={
-            <Checkbox
-              onChange={handleDeleteCheckButton}
-              disabled={!allowDeletion}
-            />
-          }
-          // onClick = {handleCheckBox}
-          label={`Delete ${userToDelete} from database`}
-          labelPlacement="end"
-        />
+        {/*<FormControlLabel*/}
+        {/*  control={*/}
+        {/*    <Checkbox*/}
+        {/*      onChange={handleDeleteCheckButton}*/}
+        {/*      disabled={!allowDeletion}*/}
+        {/*    />*/}
+        {/*  }*/}
+        {/*  // onClick = {handleCheckBox}*/}
+        {/*  label={`Delete ${userToDelete} from database`}*/}
+        {/*  labelPlacement="end"*/}
+        {/*/>*/}
         <IconButton
           aria-label="delete"
           size="large"

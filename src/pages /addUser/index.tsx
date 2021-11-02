@@ -114,6 +114,16 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
       //       mongoID = value;
       //     });
       // }
+
+      let user = {
+        _id: mongoID,
+        id: new_user_id,
+        name: newUser,
+        totalDebt: "0",
+        debtors: [],
+        creditors: [],
+      };
+
       updateActiveUsers([
         ...activeUsers,
         {
@@ -125,6 +135,9 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
           debtors: [],
         },
       ]);
+
+      // localStorage.setItem("users", JSON.stringify(activeUsers));
+
       setNewUser("");
     }
   }
@@ -157,13 +170,13 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
             ),
           }}
         />
-        <FormControlLabel
-          // value="false"
-          control={<Checkbox />}
-          onClick={handleCheckBox}
-          label={`Register ${newUser} on database`}
-          labelPlacement="end"
-        />
+        {/*<FormControlLabel*/}
+        {/*  // value="false"*/}
+        {/*  control={<Checkbox />}*/}
+        {/*  onClick={handleCheckBox}*/}
+        {/*  label={`Register ${newUser} on database`}*/}
+        {/*  labelPlacement="end"*/}
+        {/*/>*/}
         <Button
           id="add-user-submit-btn"
           variant="contained"
