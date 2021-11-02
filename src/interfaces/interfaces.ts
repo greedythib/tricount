@@ -6,8 +6,7 @@ export interface UserInterfaceMinimal {
 }
 // Interface for user
 export interface UserInterface {
-  _id: string;
-  id: string;
+  pubkey: string;
   name: string;
   totalDebt: string;
   debtors: UserInterfaceMinimal[];
@@ -27,9 +26,12 @@ export interface Props {
   updateActiveUsers: React.Dispatch<React.SetStateAction<UserInterface[]>>;
 }
 
+export interface newUserProp {
+  newUser: String;
+}
+
 export const defaultUser: UserInterface = {
-  id: "0",
-  _id: "0",
+  pubkey: "xxxxxxxxxxxxxxx",
   name: "",
   totalDebt: "",
   creditors: [],
