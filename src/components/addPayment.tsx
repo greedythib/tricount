@@ -27,6 +27,8 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
   }
 
   function handlePayment() {
+    console.log(amountPaid);
+
     if (payer === payee) {
       setInputError(true);
       return 1;
@@ -63,21 +65,23 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
       let payerDebt = payer_creditors.filter((creditor) => {
         return creditor.name == payee;
       })[0].value;
-      if (parseInt(amountPaid) == parseInt(payerDebt)) {
+      if (parseFloat(amountPaid) == parseFloat(payerDebt)) {
         // then debts compensate
         payer_creditors = remove(payee, payer_creditors);
         payee_debtors = remove(payer, payee_debtors);
-      } else if (parseInt(amountPaid) > parseInt(payerDebt)) {
+      } else if (parseFloat(amountPaid) > parseFloat(payerDebt)) {
         // then 1_ we erase payer debts
         payer_creditors = remove(payee, payer_creditors);
         payee_debtors = remove(payer, payee_debtors);
         // and 2_ create a debt for payee
-        let deductedCredit = String(parseInt(amountPaid) - parseInt(payerDebt));
+        let deductedCredit = String(
+          parseFloat(amountPaid) - parseFloat(payerDebt)
+        );
         payee_creditors.push({ name: payer, value: deductedCredit });
         payer_debtors.push({ name: payee, value: deductedCredit });
       } else {
         // the we reduce payer debt
-        let newPayerDebt = parseInt(payerDebt) - parseInt(amountPaid);
+        let newPayerDebt = parseFloat(payerDebt) - parseFloat(amountPaid);
         payer_creditors.filter((creditor) => {
           return creditor.name == payee;
         })[0].value = String(newPayerDebt);
@@ -88,29 +92,29 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
     }
     // case 2: either increase debt either create new creditor for payee
     else {
-      payee_creditors = update(payer, payee_creditors, parseInt(amountPaid));
-      payer_debtors = update(payee, payer_debtors, parseInt(amountPaid));
+      payee_creditors = update(payer, payee_creditors, parseFloat(amountPaid));
+      payer_debtors = update(payee, payer_debtors, parseFloat(amountPaid));
     }
     // NEW: update payer's debt
-    let oldPayerDebt = parseInt(
+    let oldPayerDebt = parseFloat(
       activeUsers.filter((user) => {
         return user.name === payer;
       })[0].totalDebt
     );
     // console.log(activeUsers.filter(user => {return user.name === payer})[0].totalDebt);
     // console.log('oldPayerDebt:', oldPayerDebt);
-    let newPayerDebt = oldPayerDebt - parseInt(amountPaid);
+    let newPayerDebt = oldPayerDebt - parseFloat(amountPaid);
     // console.log('newPayerDebt:', newPayerDebt);
     activeUsers.filter((user) => {
       return user.name == payer;
     })[0].totalDebt = String(newPayerDebt);
     // NEW update payee's debt
-    let oldPayeeDebt = parseInt(
+    let oldPayeeDebt = parseFloat(
       activeUsers.filter((user) => {
         return user.name == payee;
       })[0].totalDebt
     );
-    let newPayeeDebt = oldPayeeDebt + parseInt(amountPaid);
+    let newPayeeDebt = oldPayeeDebt + parseFloat(amountPaid);
     activeUsers.filter((user) => {
       return user.name == payee;
     })[0].totalDebt = String(newPayeeDebt);
@@ -122,7 +126,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
         return creditor.name === payer;
       }).length !== 0
     ) {
-      payeeDebt = parseInt(
+      payeeDebt = parseFloat(
         payee_creditors.filter((creditor) => {
           return creditor.name === payer;
         })[0].value
@@ -142,7 +146,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
         let payer_creditor_i_debtors = activeUsers.filter((user) => {
           return user.name === payer_creditors_tmp[i].name;
         })[0].debtors; // NEW
-        if (parseInt(payer_creditors_tmp[i].value) <= payeeDebt) {
+        if (parseFloat(payer_creditors_tmp[i].value) <= payeeDebt) {
           console.log("evaluating", payer_creditors_tmp[i].name, "credit");
           // delete payer debt with `payer_creditor[i]`
           payer_creditors = remove(
@@ -154,26 +158,26 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
           payee_creditors = update(
             payer_creditors_tmp[i].name,
             payee_creditors,
-            parseInt(payer_creditors_tmp[i].value)
+            parseFloat(payer_creditors_tmp[i].value)
           );
           payer_creditor_i_debtors = update(
             payee,
             payer_creditor_i_debtors,
-            parseInt(payer_creditors_tmp[i].value)
+            parseFloat(payer_creditors_tmp[i].value)
           ); // NEW
           // update payee debt with payer
           payee_creditors = update(
             payer,
             payee_creditors,
-            -parseInt(payer_creditors_tmp[i].value)
+            -parseFloat(payer_creditors_tmp[i].value)
           );
 
           payer_debtors = update(
             payee,
             payer_debtors,
-            -parseInt(payer_creditors_tmp[i].value)
+            -parseFloat(payer_creditors_tmp[i].value)
           ); // NEW
-          payeeDebt = payeeDebt - parseInt(payer_creditors_tmp[i].value);
+          payeeDebt = payeeDebt - parseFloat(payer_creditors_tmp[i].value);
           console.log("now payee debt to payer is: ", payeeDebt);
         } else {
           payee_creditors = remove(payer, payee_creditors);
@@ -200,7 +204,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
             -payeeDebt
           );
 
-          payeeDebt = payeeDebt - parseInt(payer_creditors_tmp[i].value);
+          payeeDebt = payeeDebt - parseFloat(payer_creditors_tmp[i].value);
         }
         activeUsers.filter((user) => {
           return user.name === payer_creditors_tmp[i].name;
@@ -218,7 +222,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
           return cred.name === payee;
         }).length !== 0
       ) {
-        let payeeCredit = parseInt(
+        let payeeCredit = parseFloat(
           activeUsers[k].creditors.filter((cred) => {
             return cred.name == payee;
           })[0].value
