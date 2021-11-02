@@ -76,18 +76,18 @@ export default function AlertDialogSlide({ user }: userProp) {
           <p> User ID: {user.id}</p>
           <p> User name : {user.name} </p>
           {/*<p> User outstanding debt: ${user.totalDebt} </p>*/}
-          {parseInt(user.totalDebt) === 0 && <p> No credit/debt </p>}
-          {parseInt(user.totalDebt) > 0 && (
+          {parseFloat(user.totalDebt) === 0 && <p> No credit/debt </p>}
+          {parseFloat(user.totalDebt) > 0 && (
             <p>
               {" "}
               {user.name} has an outstanding debt of {user.totalDebt} SOL
             </p>
           )}
-          {parseInt(user.totalDebt) < 0 && (
+          {parseFloat(user.totalDebt) < 0 && (
             <p>
               {" "}
               {user.name} has an outstanding credit of{" "}
-              {-parseInt(user.totalDebt)} SOL
+              {-parseFloat(user.totalDebt)} SOL
             </p>
           )}
           {user.creditors.length !== 0 ? hasCreditorsItem : noCreditorItem}

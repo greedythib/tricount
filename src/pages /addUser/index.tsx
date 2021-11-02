@@ -1,6 +1,7 @@
 import "../../utils/style/css/addUser.css";
 import { useState, useEffect } from "react";
 import { Props } from "../../interfaces/interfaces";
+import AuthenticateDialog from "../../components/authenticateDialog";
 // import Material UI components
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -35,7 +36,7 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
   const [newUser, setNewUser] = useState("");
   const [inputError, setInputError] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState("");
-  const [checkBox, setCheckBox] = useState(false);
+  // const [checkBox, setCheckBox] = useState(false);
 
   // States and variables for loading button design
   const [loading, setLoading] = React.useState(false);
@@ -142,9 +143,9 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
     }
   }
 
-  function handleCheckBox(e: any) {
-    checkBox ? setCheckBox(false) : setCheckBox(true);
-  }
+  // function handleCheckBox(e: any) {
+  //   checkBox ? setCheckBox(false) : setCheckBox(true);
+  // }
 
   return (
     <div className="add-user-div">
@@ -156,6 +157,7 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
       {/*<div id = 'add-user-input-field'>*/}
       <Stack direction="row" spacing={2} justifyContent="center" mt={5}>
         <TextField
+          label="Choose username"
           error={inputError}
           helperText={ErrorMessage}
           variant="standard"
@@ -170,6 +172,9 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
             ),
           }}
         />
+
+        <AuthenticateDialog newUser={newUser} />
+
         {/*<FormControlLabel*/}
         {/*  // value="false"*/}
         {/*  control={<Checkbox />}*/}
@@ -177,29 +182,30 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
         {/*  label={`Register ${newUser} on database`}*/}
         {/*  labelPlacement="end"*/}
         {/*/>*/}
-        <Button
-          id="add-user-submit-btn"
-          variant="contained"
-          sx={buttonSx}
-          disabled={loading || inputError}
-          onClick={addNewUser}
-          endIcon={success ? <CatchingPokemonIcon /> : <ControlPointIcon />}
-        >
-          {success ? `${newUser}  added` : "Add"}
-        </Button>
-        {loading && (
-          <CircularProgress
-            size={24}
-            sx={{
-              color: green[500],
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              marginTop: "-12px",
-              marginLeft: "-12px",
-            }}
-          />
-        )}
+
+        {/*<Button*/}
+        {/*  id="add-user-submit-btn"*/}
+        {/*  variant="contained"*/}
+        {/*  sx={buttonSx}*/}
+        {/*  disabled={loading || inputError}*/}
+        {/*  onClick={addNewUser}*/}
+        {/*  endIcon={success ? <CatchingPokemonIcon /> : <ControlPointIcon />}*/}
+        {/*>*/}
+        {/*  {success ? `${newUser}  added` : "Add"}*/}
+        {/*</Button>*/}
+        {/*{loading && (*/}
+        {/*  <CircularProgress*/}
+        {/*    size={24}*/}
+        {/*    sx={{*/}
+        {/*      color: green[500],*/}
+        {/*      position: "absolute",*/}
+        {/*      top: "50%",*/}
+        {/*      left: "50%",*/}
+        {/*      marginTop: "-12px",*/}
+        {/*      marginLeft: "-12px",*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*)}*/}
       </Stack>
       {/*</div>*/}
       {/*</div>*/}
