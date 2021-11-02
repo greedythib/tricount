@@ -24,7 +24,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import SaveIcon from "@mui/icons-material/Save";
 
 const uuidv4 = require("uuid/v4");
-const { ObjectId } = require("mongoose");
+// const { ObjectId } = require("mongoose");
 function AddUser({ activeUsers, updateActiveUsers }: Props) {
   // Retrieve list of users
   let users_list: string[] = [];
@@ -85,34 +85,35 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
       // update parent state
       let new_user_id: string = uuidv4();
       let mongoID: string = "";
-      if (checkBox) {
-        console.log(
-          "send POST request to backend in order to add new user to MongoDB"
-        );
-        let user = {
-          id: new_user_id,
-          name: newUser,
-          totalDebt: "0",
-          debtors: [],
-          creditors: [],
-        };
-        fetch("/api", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        })
-          .then(function (res) {
-            if (res.ok) {
-              return res.json();
-            }
-          })
-          .then(function (value) {
-            mongoID = value;
-          });
-      }
+      // BACKEND w/ NODE
+      // if (checkBox) {
+      //   console.log(
+      //     "send POST request to backend in order to add new user to MongoDB"
+      //   );
+      //   let user = {
+      //     id: new_user_id,
+      //     name: newUser,
+      //     totalDebt: "0",
+      //     debtors: [],
+      //     creditors: [],
+      //   };
+      //   fetch("/api", {
+      //     method: "POST",
+      //     headers: {
+      //       Accept: "application/json",
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(user),
+      //   })
+      //     .then(function (res) {
+      //       if (res.ok) {
+      //         return res.json();
+      //       }
+      //     })
+      //     .then(function (value) {
+      //       mongoID = value;
+      //     });
+      // }
       updateActiveUsers([
         ...activeUsers,
         {

@@ -5,20 +5,20 @@ import { ThemeContext } from "../../context/theme-context";
 
 // Global Style
 interface GlobalStyleProps {
-  readonly isDark: false;
+  readonly isDark: boolean;
 }
-
-const { isDark, toggleButton } = useContext(ThemeContext);
 
 export const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
   body {
     background-color: ${(props) =>
-      props.isDark ? String("black") : String("white")}; 
+      props.isDark ? String("black") : String("white")};
+    color: ${(props) => (props.isDark ? String("white") : String("black"))};
   }
 `;
 
-function myStyledGlobalStyle() {
-  return <GlobalStyleProps isDark={isDark} />;
+function MyStyledGlobalStyle() {
+  const { isDark } = useContext(ThemeContext);
+  return <GlobalStyle isDark={isDark} />;
 }
 
-export default myStyledGlobalStyle;
+export default MyStyledGlobalStyle;
