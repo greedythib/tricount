@@ -13,7 +13,7 @@ export interface styledHeaderProps {
 
 // FIXME: pass props to styled components -> https://styled-components.com/docs/api#typescript
 export const StyledHeader = styled.div<styledHeaderProps>`
-  color: darkblue;
+  color: #4e44ce;
   font-weight: bold;
   display: flex;
   flex-direction: row;

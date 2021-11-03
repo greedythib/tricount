@@ -1,7 +1,7 @@
 import "../../utils/style/css/addUser.css";
 import { useState, useEffect } from "react";
 import { Props } from "../../interfaces/interfaces";
-import AuthenticateDialog from "../../components/authenticateDialog";
+import AddUserDialog from "../../components/addUserDialog";
 // import Material UI components
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -172,7 +172,7 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
           }}
         />
 
-        <AuthenticateDialog
+        <AddUserDialog
           newUser={newUser}
           activeUsers={activeUsers}
           updateActiveUsers={updateActiveUsers}

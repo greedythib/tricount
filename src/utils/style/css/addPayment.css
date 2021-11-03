@@ -4,7 +4,7 @@
 }
 
 .add-payment-header{
-    color:darkblue;
+    color:#4e44ce;
     font-weight: bold;
     display: flex;
     flex-direction: row;
@@ -29,12 +29,30 @@
     width: 50px;
 }
 
-#add-payment-submit-btn{
+.add-payment-submit-btn-div{
     /*align-items: center;*/
     display: flex;
     justify-content: center;
     margin-top: 25px;
     margin-left: 10px;
+}
+
+#add-payment-submit-btn{
+    color: white;
+    background-color: #4e44ce;
+    /*background-color: orange;*/
+}
+
+#phantom-disconnect-submit-btn{
+    color: white;
+    background-color: #4e44ce;
+    /*background-color: orange;*/
+}
+
+#connect-phantom-submit-btn{
+    color: white;
+    background-color: #4e44ce;
+    /*background-color: orange;*/
 }
 #select-payer-textfield{
     width: 90px;

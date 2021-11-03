@@ -3,7 +3,7 @@
 /*    flex-direction: column;*/
 /*}*/
 .balance-sheet-header{
-    color:darkblue;
+    color:#4e44ce;
     font-weight: bold;
     display: flex;
     flex-direction: row;

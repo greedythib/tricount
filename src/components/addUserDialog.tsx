@@ -24,7 +24,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import * as solanaWeb3 from "@solana/web3.js";
 
 // TODO: add loading circle
-export default function AuthenticateDialog({
+export default function AddUserDialog({
   newUser,
   activeUsers,
   updateActiveUsers,
@@ -128,17 +128,6 @@ export default function AuthenticateDialog({
       // TODO: pass activeUsers and updateActiveUsers as props
       // TODO: update activeUsers
     }
-
-    // updateActiveUsers([
-    //   ...activeUsers,
-    //   {
-    //     pubkey: newUserPubkey,
-    //     name: newUser,
-    //     totalDebt: "0",
-    //     creditors: [],
-    //     debtors: [],
-    //   },
-    // ]);
   }
 
   return (

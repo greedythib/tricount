@@ -9,12 +9,96 @@ import MenuItem from "@mui/material/MenuItem";
 import { Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+
+// import { useState, useEffect } from "react";
+// Solana --------------------------------------------------------------------------------------------------------------
+import {
+  Connection,
+  PublicKey,
+  Transaction,
+  clusterApiUrl,
+  SystemProgram,
+} from "@solana/web3.js";
+// import "./styles.css";
+
+type DisplayEncoding = "utf8" | "hex";
+type PhantomEvent = "disconnect" | "connect";
+type PhantomRequestMethod =
+  | "connect"
+  | "disconnect"
+  | "signTransaction"
+  | "signAllTransactions"
+  | "signMessage";
+
+interface ConnectOpts {
+  onlyIfTrusted: boolean;
+}
+
+interface PhantomProvider {
+  publicKey: PublicKey | null;
+  isConnected: boolean | null;
+  signTransaction: (transaction: Transaction) => Promise<Transaction>;
+  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>;
+  signMessage: (
+    message: Uint8Array | string,
+    display?: DisplayEncoding
+  ) => Promise<any>;
+  connect: (opts?: Partial<ConnectOpts>) => Promise<{ publicKey: PublicKey }>;
+  disconnect: () => Promise<void>;
+  on: (event: PhantomEvent, handler: (args: any) => void) => void;
+  request: (method: PhantomRequestMethod, params: any) => Promise<unknown>;
+}
+
+const getProvider = (): PhantomProvider | undefined => {
+  if ("solana" in window) {
+    const anyWindow: any = window;
+    const provider = anyWindow.solana;
+    if (provider.isPhantom) {
+      return provider;
+    }
+  }
+  window.open("https://phantom.app/", "_blank");
+};
+
+// const NETWORK = clusterApiUrl("mainnet-beta");
+const rpcUrl = "http://127.0.0.1:8899";
+// const connection = new Connection(rpcUrl, "confirmed");
+// Solana --------------------------------------------------------------------------------------------------------------
 
 function AddPayment({ activeUsers, updateActiveUsers }: Props) {
   const [payer, setPayer] = useState(defaultUser.name);
   const [payee, setPayee] = useState(defaultUser.name);
   const [amountPaid, setAmountPaid] = useState("");
   const [inputError, setInputError] = useState(false);
+  // Handle Phantom extension
+  const provider = getProvider();
+  // const [logs, setLogs] = useState<string[]>([]);
+  // const addLog = (log: string) => setLogs([...logs, log]);
+  const connection = new Connection(rpcUrl, "confirmed");
+  const [, setConnected] = useState<boolean>(false);
+  useEffect(() => {
+    if (provider) {
+      provider.on("connect", () => {
+        setConnected(true);
+        // addLog("Connected to wallet " + provider.publicKey?.toBase58());
+      });
+      provider.on("disconnect", () => {
+        setConnected(false);
+        // addLog("Disconnected from wallet");
+      });
+      // try to eagerly connect
+      provider.connect({ onlyIfTrusted: true }).catch(() => {
+        // fail silently
+      });
+      return () => {
+        provider.disconnect();
+      };
+    }
+  }, [provider]);
+  if (!provider) {
+    return <h2>Could not find a provider</h2>;
+  }
 
   function handlePayer(e: any) {
     setPayer(e.target.value);
@@ -28,7 +112,6 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
 
   function handlePayment() {
     console.log(amountPaid);
-
     if (payer === payee) {
       setInputError(true);
       return 1;
@@ -346,15 +429,51 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
           ))}
         </TextField>
       </Stack>
-      <div id="add-payment-submit-btn">
-        <Button
-          variant="contained"
-          // disabled={inputError}
-          onClick={handlePayment}
-          endIcon={<ControlPointIcon />}
-        >
-          Confirm
-        </Button>
+      <div className="add-payment-submit-btn-div">
+        {provider && provider.publicKey ? (
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <Button
+              id="add-payment-submit-btn"
+              variant="contained"
+              onClick={handlePayment}
+              endIcon={<ControlPointIcon />}
+            >
+              Confirm
+            </Button>
+            <Button
+              id="phantom-disconnect-submit-btn"
+              variant="outlined"
+              onClick={async () => {
+                try {
+                  const res = await provider.disconnect();
+                  // addLog(JSON.stringify(res));
+                } catch (err) {
+                  console.warn(err);
+                  // addLog("Error: " + JSON.stringify(err));
+                }
+              }}
+            >
+              Disconnect
+            </Button>
+          </Stack>
+        ) : (
+          <Button
+            id="connect-phantom-submit-btn"
+            variant="contained"
+            onClick={async () => {
+              try {
+                const res = await provider.connect();
+                // addLog(JSON.stringify(res));
+              } catch (err) {
+                console.warn(err);
+                // addLog("Error: " + JSON.stringify(err));
+              }
+            }}
+            endIcon={<LockOpenIcon />}
+          >
+            Connect to Phantom
+          </Button>
+        )}
       </div>
     </div>
   );
