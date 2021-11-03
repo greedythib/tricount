@@ -73,75 +73,74 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
     }
   }
 
-  function addNewUser(e: any) {
-    if (newUser !== "") {
-      if (!loading) {
-        setSuccess(false);
-        setLoading(true);
-        timer.current = window.setTimeout(() => {
-          setSuccess(true);
-          setLoading(false);
-        }, 750);
-      }
-      // update parent state
-      let new_user_id: string = uuidv4();
-      let mongoID: string = "";
-      // BACKEND w/ NODE
-      // if (checkBox) {
-      //   console.log(
-      //     "send POST request to backend in order to add new user to MongoDB"
-      //   );
-      //   let user = {
-      //     id: new_user_id,
-      //     name: newUser,
-      //     totalDebt: "0",
-      //     debtors: [],
-      //     creditors: [],
-      //   };
-      //   fetch("/api", {
-      //     method: "POST",
-      //     headers: {
-      //       Accept: "application/json",
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(user),
-      //   })
-      //     .then(function (res) {
-      //       if (res.ok) {
-      //         return res.json();
-      //       }
-      //     })
-      //     .then(function (value) {
-      //       mongoID = value;
-      //     });
-      // }
-
-      let user = {
-        _id: mongoID,
-        id: new_user_id,
-        name: newUser,
-        totalDebt: "0",
-        debtors: [],
-        creditors: [],
-      };
-
-      updateActiveUsers([
-        ...activeUsers,
-        {
-          _id: mongoID,
-          id: new_user_id,
-          name: newUser,
-          totalDebt: "0",
-          creditors: [],
-          debtors: [],
-        },
-      ]);
-
-      // localStorage.setItem("users", JSON.stringify(activeUsers));
-
-      setNewUser("");
-    }
-  }
+  // function addNewUser(e: any) {
+  //   if (newUser !== "") {
+  //     if (!loading) {
+  //       setSuccess(false);
+  //       setLoading(true);
+  //       timer.current = window.setTimeout(() => {
+  //         setSuccess(true);
+  //         setLoading(false);
+  //       }, 750);
+  //     }
+  //     // update parent state
+  //     let new_user_id: string = uuidv4();
+  //     let mongoID: string = "";
+  //     // BACKEND w/ NODE
+  //     // if (checkBox) {
+  //     //   console.log(
+  //     //     "send POST request to backend in order to add new user to MongoDB"
+  //     //   );
+  //     //   let user = {
+  //     //     id: new_user_id,
+  //     //     name: newUser,
+  //     //     totalDebt: "0",
+  //     //     debtors: [],
+  //     //     creditors: [],
+  //     //   };
+  //     //   fetch("/api", {
+  //     //     method: "POST",
+  //     //     headers: {
+  //     //       Accept: "application/json",
+  //     //       "Content-Type": "application/json",
+  //     //     },
+  //     //     body: JSON.stringify(user),
+  //     //   })
+  //     //     .then(function (res) {
+  //     //       if (res.ok) {
+  //     //         return res.json();
+  //     //       }
+  //     //     })
+  //     //     .then(function (value) {
+  //     //       mongoID = value;
+  //     //     });
+  //     // }
+  //
+  //     let user = {
+  //       _id: mongoID,
+  //       id: new_user_id,
+  //       name: newUser,
+  //       totalDebt: "0",
+  //       debtors: [],
+  //       creditors: [],
+  //     };
+  //
+  //     updateActiveUsers([
+  //       ...activeUsers,
+  //       {
+  //         _id: mongoID,
+  //         id: new_user_id,
+  //         name: newUser,
+  //         totalDebt: "0",
+  //         creditors: [],
+  //         debtors: [],
+  //       },
+  //     ]);
+  //
+  //     // localStorage.setItem("users", JSON.stringify(activeUsers));
+  //     setNewUser("");
+  //   }
+  // }
 
   // function handleCheckBox(e: any) {
   //   checkBox ? setCheckBox(false) : setCheckBox(true);
@@ -173,7 +172,11 @@ function AddUser({ activeUsers, updateActiveUsers }: Props) {
           }}
         />
 
-        <AuthenticateDialog newUser={newUser} />
+        <AuthenticateDialog
+          newUser={newUser}
+          activeUsers={activeUsers}
+          updateActiveUsers={updateActiveUsers}
+        />
 
         {/*<FormControlLabel*/}
         {/*  // value="false"*/}

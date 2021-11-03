@@ -5,7 +5,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { userProp } from "../interfaces/interfaces";
+import {
+  userProp,
+  newUserProps,
+  authenticateDialogProps,
+} from "../interfaces/interfaces";
 import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import * as React from "react";
@@ -14,15 +18,38 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
+import { green } from "@mui/material/colors";
+import CircularProgress from "@mui/material/CircularProgress";
+// SOLANA
+import * as solanaWeb3 from "@solana/web3.js";
 
-interface newUserProp {
-  newUser: String;
-}
-
-export default function AuthenticateDialog({ newUser }: newUserProp) {
+// TODO: add loading circle
+export default function AuthenticateDialog({
+  newUser,
+  activeUsers,
+  updateActiveUsers,
+}: authenticateDialogProps) {
   const [open, setOpen] = useState(false);
   const [newUserPubkey, setNewUserPubkey] = useState("");
   const [inputError, setInputError] = useState(true);
+  // States and variables for loading button design
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const timer: any = React.useRef();
+  const buttonSx = {
+    ...(success && {
+      bgcolor: green[500],
+      "&:hover": {
+        bgcolor: green[700],
+      },
+    }),
+  };
+
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,15 +59,86 @@ export default function AuthenticateDialog({ newUser }: newUserProp) {
     setOpen(false);
   };
 
-  function handleNewUserPubkey(e: any) {
-    // TODO: check user input
+  function handlePubkeyInput(e: any) {
+    // TODO: add more conditions to check user input
+    setSuccess(false);
+    if (e.target.value.length === 44) {
+      setInputError(false);
+    } else {
+      setInputError(true);
+    }
     // TODO: check if account exists
-    setInputError(false);
     setNewUserPubkey(e.target.value);
   }
 
-  function handleAddUser() {
-    // TODO add user
+  async function handleAddUser() {
+    if (newUser !== "") {
+      if (!loading) {
+        setSuccess(false);
+        setLoading(true);
+        // TODO: establish connection (prop? context?)
+        console.log("Connecting to Solana cluster...");
+        const rpcUrl = "http://localhost:8899";
+        let connection = new solanaWeb3.Connection(rpcUrl, "confirmed");
+        const version = await connection.getVersion();
+        console.log("Connection to cluster established:", rpcUrl, version);
+        console.log(
+          "Checking if pubkey",
+          newUserPubkey,
+          "is associated to an existing account..."
+        );
+        try {
+          let PubKey_input: solanaWeb3.PublicKey =
+            await new solanaWeb3.PublicKey(newUserPubkey);
+          // console.log(PubKey_input);
+          let account = await connection.getAccountInfo(PubKey_input);
+          // console.log(account);
+          if (account === null) {
+            alert("pubkey does not match any account on cluster");
+            timer.current = window.setTimeout(() => {
+              setLoading(false);
+            }, 750);
+          } else {
+            // alert("ADDRESS VALID");
+            // console.log("adding new user to local browser storage");
+            updateActiveUsers([
+              ...activeUsers,
+              {
+                pubkey: newUserPubkey,
+                name: newUser,
+                totalDebt: "0",
+                creditors: [],
+                debtors: [],
+              },
+            ]);
+            timer.current = window.setTimeout(() => {
+              setSuccess(true);
+              setLoading(false);
+            }, 750);
+          }
+
+          // setNewUserPubkey("");
+        } catch (err) {
+          setSuccess(false);
+          setInputError(true);
+          setLoading(false);
+          alert(err);
+        }
+      }
+      // TODO: pass activeUsers and updateActiveUsers as props
+      // TODO: update activeUsers
+    }
+
+    // updateActiveUsers([
+    //   ...activeUsers,
+    //   {
+    //     pubkey: newUserPubkey,
+    //     name: newUser,
+    //     totalDebt: "0",
+    //     creditors: [],
+    //     debtors: [],
+    //   },
+    // ]);
   }
 
   return (
@@ -75,7 +173,7 @@ export default function AuthenticateDialog({ newUser }: newUserProp) {
               variant="standard"
               // value={newUser}
               // label = {newUser}
-              onChange={handleNewUserPubkey}
+              onChange={handlePubkeyInput}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -87,15 +185,28 @@ export default function AuthenticateDialog({ newUser }: newUserProp) {
             <Button
               id="add-user-submit-btn"
               variant="contained"
-              // sx={buttonSx}
-              // disabled={loading || inputError}
-              disabled={inputError}
+              sx={buttonSx}
+              disabled={loading || inputError}
+              // disabled={inputError}
               onClick={handleAddUser}
               endIcon={<ControlPointIcon />}
             >
-              {/*{success ? `${newUser}  added` : "Add"}*/}
-              Add
+              {success ? "Added" : "Add"}
+              {/*{!success }*/}
             </Button>
+            {loading && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
           </Stack>
         </DialogContent>
         <DialogActions>

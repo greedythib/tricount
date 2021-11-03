@@ -40,7 +40,7 @@ function DisplayUser({ activeUsers }: activeUserProp) {
           }}
         >
           {activeUsers.map((user) => (
-            <MenuItem key={user.id} value={user.name}>
+            <MenuItem key={user.pubkey} value={user.name}>
               {user.name}
             </MenuItem>
           ))}

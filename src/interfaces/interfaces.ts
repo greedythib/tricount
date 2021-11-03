@@ -26,8 +26,15 @@ export interface Props {
   updateActiveUsers: React.Dispatch<React.SetStateAction<UserInterface[]>>;
 }
 
-export interface newUserProp {
-  newUser: String;
+export interface newUserProps {
+  newUser: string;
+  setNewUser: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface authenticateDialogProps {
+  newUser: string;
+  activeUsers: UserInterface[];
+  updateActiveUsers: React.Dispatch<React.SetStateAction<UserInterface[]>>;
 }
 
 export const defaultUser: UserInterface = {

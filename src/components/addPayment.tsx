@@ -317,7 +317,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
           id="select-payer-textfield"
         >
           {activeUsers.map((user) => (
-            <MenuItem key={user.id} value={user.name}>
+            <MenuItem key={user.pubkey} value={user.name}>
               {user.name}
             </MenuItem>
           ))}

@@ -1,19 +1,40 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { userProp } from "../interfaces/interfaces";
+import { UserInterface, userProp } from "../interfaces/interfaces";
 import Slide from "@mui/material/Slide";
-
-// const Transition = forwardRef(function Transition(props, ref) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-// });
+// SOLANA
+import * as solanaWeb3 from "@solana/web3.js";
 
 export default function AlertDialogSlide({ user }: userProp) {
   const [open, setOpen] = useState(false);
+  const [user_balance, setUserBalance] = useState(0);
+
+  // SOLANA Part -----------------------------------------------------------------------------------------------------
+  console.log("Connecting to Solana cluster..."); // TODO: pass connection as a context
+  const rpcUrl = "http://localhost:8899";
+  let connection = new solanaWeb3.Connection(rpcUrl, "confirmed");
+  //  TODO: write in `solana/utils.js` a function to connect and then get user balance on solana
+  async function getAccountBalance(
+    connection: solanaWeb3.Connection,
+    user: UserInterface
+  ) {
+    // console.log("USER PUBKEY before", user.pubkey);
+    let userPubKey = await new solanaWeb3.PublicKey(user.pubkey);
+    // console.log("USER PUBKEY", userPubKey);
+    let balance = await connection.getBalance(userPubKey);
+    setUserBalance(balance / solanaWeb3.LAMPORTS_PER_SOL);
+  }
+  useEffect(() => {
+    if (user.name !== "") {
+      getAccountBalance(connection, user);
+    }
+  });
+  // SOLANA Part -----------------------------------------------------------------------------------------------------
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -73,8 +94,9 @@ export default function AlertDialogSlide({ user }: userProp) {
         <DialogTitle> About {user.name}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description"></DialogContentText>
-          <p> User ID: {user.id}</p>
+          <p> Solana PubKey: {user.pubkey}</p>
           <p> User name : {user.name} </p>
+          <p> Current SOLANA account balance: {user_balance} SOL </p>
           {/*<p> User outstanding debt: ${user.totalDebt} </p>*/}
           {parseFloat(user.totalDebt) === 0 && <p> No credit/debt </p>}
           {parseFloat(user.totalDebt) > 0 && (
