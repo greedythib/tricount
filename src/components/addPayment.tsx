@@ -10,8 +10,9 @@ import { Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import Collapse from "@mui/material/Collapse";
+import Alert from "@mui/material/Alert";
 
-// import { useState, useEffect } from "react";
 // Solana --------------------------------------------------------------------------------------------------------------
 import {
   Connection,
@@ -72,6 +73,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
   const [payee, setPayee] = useState(defaultUser.name);
   const [amountPaid, setAmountPaid] = useState("");
   const [inputError, setInputError] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   // ----- Handle Phantom extension-----
   const provider = getProvider();
   // const [logs, setLogs] = useState<string[]>([]);
@@ -102,6 +104,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
   }
 
   function handlePayer(e: any) {
+    setPaymentSuccess(false);
     setInputError(false);
     setPayer("");
     if (provider && provider.publicKey) {
@@ -120,9 +123,11 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
     setPayer(e.target.value);
   }
   function handlePayee(e: any) {
+    setPaymentSuccess(false);
     setPayee(e.target.value);
   }
   function handleAmountPaid(e: any) {
+    setPaymentSuccess(false);
     setAmountPaid(e.target.value);
   }
 
@@ -172,7 +177,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
         //     "Submitted transaction " + signature + ", awaiting confirmation"
         // );
         await connection.confirmTransaction(signature);
-        // addLog("Transaction " + signature + " confirmed");
+        setPaymentSuccess(true);
       } catch (err) {
         console.warn(err);
         // addLog("Error: " + JSON.stringify(err));
@@ -192,9 +197,15 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
     }
     setInputError(false);
 
-    // todo: Init real payment on Solana blockchain
+    // todo: add confirmation snackbar => https://codesandbox.io/s/dcjz0?file=/demo.js
     createTransferTransaction(payer, payee, amountPaid);
-    sendTransaction(payer, payee, amountPaid);
+    try {
+      sendTransaction(payer, payee, amountPaid);
+      // setPaymentSuccess(true);
+    } catch (error) {
+      alert(error);
+    }
+
     // Update active users => display payment in `BalanceSheet`
     // console.log(activeUsers.filter(user => {return user.name == payee})[0].creditors)
     let payee_creditors = activeUsers.filter((user) => {
@@ -252,7 +263,6 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
       payee_creditors = update(payer, payee_creditors, parseFloat(amountPaid));
       payer_debtors = update(payee, payer_debtors, parseFloat(amountPaid));
     }
-    // NEW: update payer's debt
     let oldPayerDebt = parseFloat(
       activeUsers.filter((user) => {
         return user.name === payer;
@@ -555,6 +565,11 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
           </Button>
         )}
       </div>
+      <Collapse in={paymentSuccess}>
+        <Alert severity="success" sx={{ mb: 2, mt: 2 }}>
+          {`Success! ${payer} has paid ${amountPaid} SOL to ${payee}`}
+        </Alert>
+      </Collapse>
     </div>
   );
 }
