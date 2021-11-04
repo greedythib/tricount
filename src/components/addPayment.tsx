@@ -19,6 +19,7 @@ import {
   Transaction,
   clusterApiUrl,
   SystemProgram,
+  LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
 // import "./styles.css";
 
@@ -58,7 +59,7 @@ const getProvider = (): PhantomProvider | undefined => {
       return provider;
     }
   }
-  window.open("https://phantom.app/", "_blank");
+  window.open("https://phantom.app/", "_blank"); // todo: try to add style
 };
 
 // const NETWORK = clusterApiUrl("mainnet-beta");
@@ -71,7 +72,7 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
   const [payee, setPayee] = useState(defaultUser.name);
   const [amountPaid, setAmountPaid] = useState("");
   const [inputError, setInputError] = useState(false);
-  // Handle Phantom extension
+  // ----- Handle Phantom extension-----
   const provider = getProvider();
   // const [logs, setLogs] = useState<string[]>([]);
   // const addLog = (log: string) => setLogs([...logs, log]);
@@ -101,6 +102,21 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
   }
 
   function handlePayer(e: any) {
+    setInputError(false);
+    setPayer("");
+    if (provider && provider.publicKey) {
+      // console.log(provider.publicKey?.toString());
+      let payer_tmp = e.target.value;
+      let payer_address = activeUsers.filter((user) => {
+        return user.name === e.target.value;
+      })[0].pubkey;
+      // console.log(payer_address);
+      if (provider.publicKey?.toString() !== payer_address) {
+        alert("User selected has a different pubkey than user logged in!");
+        setInputError(true);
+        return;
+      }
+    }
     setPayer(e.target.value);
   }
   function handlePayee(e: any) {
@@ -110,17 +126,75 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
     setAmountPaid(e.target.value);
   }
 
+  const createTransferTransaction = async (
+    payer: string,
+    payee: string,
+    amount: string
+  ) => {
+    if (!provider.publicKey) {
+      return;
+    }
+    // todo: add identity checks
+    let payee_pubkey = new PublicKey(
+      activeUsers.filter((user) => {
+        return user.name === payee;
+      })[0].pubkey
+    );
+    let transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: provider.publicKey,
+        toPubkey: payee_pubkey,
+        lamports: parseFloat(amount) * LAMPORTS_PER_SOL,
+      })
+    );
+    console.log("[TRANSACTION INFO]: ", transaction);
+    transaction.feePayer = provider.publicKey;
+    // addLog("Getting recent blockhash");
+    const anyTransaction: any = transaction;
+    anyTransaction.recentBlockhash = (
+      await connection.getRecentBlockhash()
+    ).blockhash;
+    return transaction;
+  };
+
+  const sendTransaction = async (
+    payer: string,
+    payee: string,
+    amount: string
+  ) => {
+    const transaction = await createTransferTransaction(payer, payee, amount);
+    if (transaction) {
+      try {
+        let signed = await provider.signTransaction(transaction);
+        // addLog("Got signature, submitting transaction");
+        let signature = await connection.sendRawTransaction(signed.serialize());
+        // addLog(
+        //     "Submitted transaction " + signature + ", awaiting confirmation"
+        // );
+        await connection.confirmTransaction(signature);
+        // addLog("Transaction " + signature + " confirmed");
+      } catch (err) {
+        console.warn(err);
+        // addLog("Error: " + JSON.stringify(err));
+      }
+    }
+  };
+
   function handlePayment() {
     console.log(amountPaid);
     if (payer === payee) {
       setInputError(true);
-      return 1;
+      return;
     }
     if (amountPaid === "") {
       setInputError(true);
-      return 1;
+      return;
     }
     setInputError(false);
+
+    // todo: Init real payment on Solana blockchain
+    createTransferTransaction(payer, payee, amountPaid);
+    sendTransaction(payer, payee, amountPaid);
     // Update active users => display payment in `BalanceSheet`
     // console.log(activeUsers.filter(user => {return user.name == payee})[0].creditors)
     let payee_creditors = activeUsers.filter((user) => {
@@ -385,7 +459,6 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
     <div className="add-payment-div">
       <div className="add-payment-header">
         <span id="add-payment-header-logo">
-          {" "}
           <PaymentIcon />{" "}
         </span>
         Add new payment
@@ -431,31 +504,38 @@ function AddPayment({ activeUsers, updateActiveUsers }: Props) {
       </Stack>
       <div className="add-payment-submit-btn-div">
         {provider && provider.publicKey ? (
-          <Stack direction="row" spacing={2} justifyContent="center">
-            <Button
-              id="add-payment-submit-btn"
-              variant="contained"
-              onClick={handlePayment}
-              endIcon={<ControlPointIcon />}
-            >
-              Confirm
-            </Button>
-            <Button
-              id="phantom-disconnect-submit-btn"
-              variant="outlined"
-              onClick={async () => {
-                try {
-                  const res = await provider.disconnect();
-                  // addLog(JSON.stringify(res));
-                } catch (err) {
-                  console.warn(err);
-                  // addLog("Error: " + JSON.stringify(err));
-                }
-              }}
-            >
-              Disconnect
-            </Button>
-          </Stack>
+          <div>
+            <Stack direction="row" spacing={2} justifyContent="center">
+              <Button
+                id="add-payment-submit-btn"
+                variant="contained"
+                onClick={handlePayment}
+                endIcon={<ControlPointIcon />}
+              >
+                Confirm
+              </Button>
+              <Button
+                id="phantom-disconnect-submit-btn"
+                variant="outlined"
+                onClick={async () => {
+                  try {
+                    const res = await provider.disconnect();
+                    // addLog(JSON.stringify(res));
+                  } catch (err) {
+                    console.warn(err);
+                    // addLog("Error: " + JSON.stringify(err));
+                  }
+                }}
+              >
+                Disconnect
+              </Button>
+            </Stack>
+
+            <div id="display-pubkey">
+              Pubkey being used:{" "}
+              {JSON.stringify(provider?.publicKey.toBase58())}
+            </div>
+          </div>
         ) : (
           <Button
             id="connect-phantom-submit-btn"
